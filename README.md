@@ -26,7 +26,7 @@ $markdown = docdown(array(
 
 ## Cloning this repo
 
-To clone this repository including all submodules, using git 1.6.5 or later:
+To clone this repository just use:
 
 ~~~ bash
 git clone https://github.com/docdown/docdown.git
