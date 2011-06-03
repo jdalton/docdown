@@ -264,6 +264,7 @@ class Generator {
 
     foreach ($api as $key => $entry) {
       $entry->hash = $this->getHash($entry);
+      $entry->href = $this->getLineUrl($entry);
       $member = str_replace(":", "#", $entry->hash);
       $compiling = $compiling ? ($result[] = $closeTag) : true;
 
