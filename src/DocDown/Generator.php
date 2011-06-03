@@ -52,10 +52,19 @@ class Generator {
       $options["path"] = $options["source"];
     }
     if (isset($options["path"])) {
+      preg_match("/(?<=\.)[a-z]+$/", $options["path"], $ext);
       $options["source"] = file_get_contents($options["path"]);
+      $ext = array_pop($ext);
+
+      if (!isset($options["lang"]) && $ext) {
+        $options["lang"] = $ext;
+      }
       if (!isset($options["title"])) {
         $options["title"] = ucfirst(basename($options["path"])) . " API documentation";
       }
+    }
+    if (!isset($options["lang"])) {
+      $options["lang"] = "js";
     }
 
     $this->options = $options;
@@ -63,7 +72,7 @@ class Generator {
     $this->entries = Entry::getEntries($this->source);
 
     foreach ($this->entries as $index => $value) {
-      $this->entries[$index] = new Entry($value, $this->source);
+      $this->entries[$index] = new Entry($value, $this->source, $options["lang"]);
     }
   }
 

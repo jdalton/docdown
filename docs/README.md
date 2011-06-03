@@ -34,7 +34,7 @@ Generates Markdown from JSDoc entries in a given file.
 *(String)*: The generated Markdown.
 
 #### Example
-~~~ js
+~~~ php
 // specify a file path
 $markdown = docdown(array(
   // path to js file

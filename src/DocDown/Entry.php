@@ -1,6 +1,6 @@
 <?php
 /*!
- * This file is part of the DocDown package. 
+ * This file is part of the DocDown package.
  * Copyright 2011 John-David Dalton <http://allyoucanleet.com/>
  * Available under MIT license <http://mths.be/mit>
  */
@@ -18,6 +18,13 @@ class Entry {
   public $entry = "";
 
   /**
+   * The language highlighter used for code examples.
+   * @member Entry
+   * @type String
+   */
+  public $lang = "";
+
+  /**
    * The source code.
    * @member Entry
    * @type String
@@ -31,9 +38,11 @@ class Entry {
    * @constructor
    * @param {String} $entry The documentation entry to analyse.
    * @param {String} $source The source code.
+   * @param {String} $lang The language highlighter used code examples.
    */
-  public function __construct( $entry, $source ) {
+  public function __construct( $entry, $source, $lang = "js" ) {
     $this->entry = $entry;
+    $this->lang = $lang;
     $this->source = str_replace(PHP_EOL, "\n", $source);
   }
 
@@ -100,7 +109,7 @@ class Entry {
   public function getExample() {
     preg_match("#@example([\s\S]*)?(?=\*\s\@[a-z]|\*/)#", $this->entry, $result);
     if (count($result)) {
-      $result = "~~~ js\n" . trim(preg_replace("/\n\s*\* ?/", "\n", $result[1])) . "\n~~~";
+      $result = "~~~ " . $this->lang . "\n" . trim(preg_replace("/\n\s*\* ?/", "\n", $result[1])) . "\n~~~";
     }
     return $result;
   }
