@@ -131,7 +131,7 @@ class Entry {
    * @returns {Array|String} The entry `member` data.
    */
   public function getMembers( $index = null ) {
-    preg_match("/@member ([^\n]+)/", $this->entry, $result);
+    preg_match("/@member(?:Of)? ([^\n]+)/", $this->entry, $result);
     if (count($result)) {
       $result = preg_split("/,\s*/", $result[1]);
     }
