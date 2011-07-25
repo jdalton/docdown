@@ -192,7 +192,9 @@ class Entry {
    */
   public function getType() {
     preg_match("/@type ([^\n]+)/", $this->entry, $result);
-    return count($result) ? $result[1] : ($this->isCtor() || count($this->getReturns()) ? "Function" : "Unknown");
+    return count($result) ? $result[1] :
+      ($this->isCtor() || count($this->getReturns()) ||
+        stripos($this->getCall(), "(") !== false ? "Function" : "Unknown");
   }
 
   /**
