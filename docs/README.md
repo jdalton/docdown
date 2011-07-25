@@ -23,7 +23,7 @@
 
 <!-- div -->
 
-### <a id="docdown" href="" title="View in source">`docdown([$options=array()])`</a>
+### <a id="docdown" href="https://github.com/jdalton/docdown/blob/master/docdown.php#L34" title="View in source">`docdown([$options=array()])`</a>
 Generates Markdown from JSDoc entries in a given file.
 [&#9650;][1]
 

@@ -314,7 +314,7 @@ class Generator {
         $subentries = is_string($kind) ? $entry->{$kind} : array($kind);
 
         // title
-        if (count($subentries) && $subentries[0] != $kind) {
+        if ($entry->getType() != "Object" && count($subentries) && $subentries[0] != $kind) {
           if ($kind == "plugin") {
             $result[] = $closeTag;
           }
@@ -325,6 +325,7 @@ class Generator {
             Generator::interpolate("### <a id=\"#{hash}\" href=\"#{href}\" title=\"View in source\">`#{member}#{call}`</a>\n#{desc}\n[&#9650;][1]", $entry)
           );
         }
+
         // body
         foreach ($subentries as $subentry) {
           // description
