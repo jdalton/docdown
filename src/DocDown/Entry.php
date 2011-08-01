@@ -15,21 +15,21 @@ class Entry {
    * @member Entry
    * @type String
    */
-  public $entry = "";
+  public $entry = '';
 
   /**
    * The language highlighter used for code examples.
    * @member Entry
    * @type String
    */
-  public $lang = "";
+  public $lang = '';
 
   /**
    * The source code.
    * @member Entry
    * @type String
    */
-  public $source = "";
+  public $source = '';
 
   /*--------------------------------------------------------------------------*/
 
@@ -40,7 +40,7 @@ class Entry {
    * @param {String} $source The source code.
    * @param {String} $lang The language highlighter used code examples.
    */
-  public function __construct( $entry, $source, $lang = "js" ) {
+  public function __construct( $entry, $source, $lang = 'js' ) {
     $this->entry = $entry;
     $this->lang = $lang;
     $this->source = str_replace(PHP_EOL, "\n", $source);
@@ -56,7 +56,7 @@ class Entry {
    * @returns {Array} The array of entries.
    */
   public static function getEntries( $source ) {
-    preg_match_all("#/\*(?![-!])[\s\S]*?\*/\s*[^=\n;]+#", $source, $result);
+    preg_match_all('#/\*(?![-!])[\s\S]*?\*/\s*[^=\n;]+#', $source, $result);
     return array_pop($result);
   }
 
@@ -69,9 +69,9 @@ class Entry {
    */
   public function getCall() {
     // make regexp delimiter `@` to avoid problems with members containing `#`
-    preg_match("@\*/\s*(?:function ([^(]*)|([^:=,]*))@", $this->entry, $result);
+    preg_match('@\*/\s*(?:function ([^(]*)|([^:=,]*))@', $this->entry, $result);
     if ($result = array_pop($result)) {
-      $result = array_pop(explode("var ", trim(trim(array_pop(explode(".", $result))), "'")));
+      $result = array_pop(explode('var ', trim(trim(array_pop(explode('.', $result))), "'")));
     }
     if (count($params = $this->getParams())) {
       // compile
@@ -80,8 +80,8 @@ class Entry {
         $result[] = $param[1];
       }
       // format
-      $result = array_shift($result) ."(". implode($result, ", ") .")";
-      $result = str_replace(", [", " [, ", str_replace("], [", ", ", $result));
+      $result = array_shift($result) .'('. implode($result, ', ') .')';
+      $result = str_replace(', [', ' [, ', str_replace('], [', ', ', $result));
     }
     return $result;
   }
@@ -92,11 +92,11 @@ class Entry {
    * @returns {String} The entry description.
    */
   public function getDesc() {
-    preg_match("#/\*\*(?:\s*\*)? ([^@]+)#", $this->entry, $result);
+    preg_match('#/\*\*(?:\s*\*)? ([^@]+)#', $this->entry, $result);
     if (count($result)) {
       $type = $this->getType();
-      $result = array_shift(preg_split("#\n\s*\* |\*/#", $result[1]));
-      $result = ($type == "Function" ? "" : "(" . str_replace("|", ", ", trim($type, "{}")) . "): ") . trim($result);
+      $result = array_shift(preg_split('#\n\s*\* |\*/#', $result[1]));
+      $result = ($type == 'Function' ? '' : '(' . str_replace('|', ', ', trim($type, '{}')) . '): ') . trim($result);
     }
     return $result;
   }
@@ -107,9 +107,9 @@ class Entry {
    * @returns {String} The entry `example` data.
    */
   public function getExample() {
-    preg_match("#@example([\s\S]*)?(?=\*\s\@[a-z]|\*/)#", $this->entry, $result);
+    preg_match('#\*\s*@example([\s\S]*)?(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
     if (count($result)) {
-      $result = "~~~ " . $this->lang . "\n" . trim(preg_replace("/\n\s*\* ?/", "\n", $result[1])) . "\n~~~";
+      $result = '~~~ ' . $this->lang . "\n" . trim(preg_replace('/\n\s*\* ?/', "\n", $result[1])) . "\n~~~";
     }
     return $result;
   }
@@ -120,7 +120,7 @@ class Entry {
    * @returns {Number} The line number.
    */
   public function getLineNumber() {
-    preg_match_all("/\n/", substr($this->source, 0, strrpos($this->source, $this->entry) + strlen($this->entry)), $lines);
+    preg_match_all('/\n/', substr($this->source, 0, strrpos($this->source, $this->entry) + strlen($this->entry)), $lines);
     return count(array_pop($lines)) + 1;
   }
 
@@ -131,9 +131,9 @@ class Entry {
    * @returns {Array|String} The entry `member` data.
    */
   public function getMembers( $index = null ) {
-    preg_match("/@member(?:Of)? ([^\n]+)/", $this->entry, $result);
+    preg_match('/\*\s*@member(?:Of)? ([^\n]+)/', $this->entry, $result);
     if (count($result)) {
-      $result = preg_split("/,\s*/", $result[1]);
+      $result = preg_split('/,\s*/', $result[1]);
     }
     return $index !== null ? @$result[$index] : $result;
   }
@@ -144,8 +144,8 @@ class Entry {
    * @returns {String} The entry `name` data.
    */
   public function getName() {
-    preg_match("/@name ([^\n]+)/", $this->entry, $result);
-    return count($result) ? $result[1] : array_shift(explode("(", $this->getCall()));
+    preg_match('/\*\s*@name ([^\n]+)/', $this->entry, $result);
+    return count($result) ? $result[1] : array_shift(explode('(', $this->getCall()));
   }
 
   /**
@@ -155,7 +155,7 @@ class Entry {
    * @returns {Array} The entry `param` data.
    */
   public function getParams( $index = null ) {
-    preg_match_all("/@param \{([^}]+)\} (\[[^]]+\]|[$\w]+) ([^\n]+)/", $this->entry, $result);
+    preg_match_all('/\*\s*@param \{([^}]+)\} (\[[^]]+\]|[$\w]+) ([^\n]+)/', $this->entry, $result);
     if (count($result = array_filter(array_slice($result, 1)))) {
       // repurpose array
       foreach ($result as $param) {
@@ -177,10 +177,10 @@ class Entry {
    * @returns {String} The entry `returns` data.
    */
   public function getReturns() {
-    preg_match("/@returns \{([^}]+)\} ([^*]+)/", $this->entry, $result);
+    preg_match('/\*\s*@returns \{([^}]+)\} ([^*]+)/', $this->entry, $result);
     if (count($result)) {
-      $result = array_map("trim", array_slice($result, 1));
-      $result[0] = str_replace("|", ", ", $result[0]);
+      $result = array_map('trim', array_slice($result, 1));
+      $result[0] = str_replace('|', ', ', $result[0]);
     }
     return $result;
   }
@@ -191,10 +191,11 @@ class Entry {
    * @returns {String} The entry `type` data.
    */
   public function getType() {
-    preg_match("/@type ([^\n]+)/", $this->entry, $result);
+    preg_match('/\*\s*@type ([^\n]+)/', $this->entry, $result);
     return count($result) ? $result[1] :
-      ($this->isCtor() || count($this->getReturns()) ||
-        stripos($this->getCall(), "(") !== false ? "Function" : "Unknown");
+      ($this->isCtor() || count($this->getParams()) || count($this->getReturns()) ||
+      preg_match('/\*\s*@function\b/', $this->entry) ||
+      strpos($this->getCall(), '(') !== false ? 'Function' : 'Unknown');
   }
 
   /**
@@ -203,7 +204,7 @@ class Entry {
    * @returns {Boolean} Returns true if a constructor, else false.
    */
   public function isCtor() {
-    return strripos($this->entry, "@constructor") !== false;
+    return !!preg_match('/\*\s*@constructor\b/', $this->entry);
   }
 
   /**
@@ -221,7 +222,7 @@ class Entry {
    * @returns {Boolean} Returns true if private, else false.
    */
   public function isPrivate() {
-    return strripos($this->entry, "@private") !== false || strripos($this->entry, "@") === false;
+    return !!preg_match('/\*\s*@private\b/', $this->entry) || strrpos($this->entry, '@') === false;
   }
 
   /**
@@ -231,11 +232,11 @@ class Entry {
    */
   public function isStatic() {
     $public = !$this->isPrivate();
-    $result = $public && strripos($this->entry, "@static") !== false;
+    $result = $public && !!preg_match('/\*\s*@static\b/', $this->entry);
 
     // set in cases where it isn't explicitly stated
     if ($public && !$result) {
-      if ($parent = array_pop(preg_split("/[#.]/", $this->getMembers(0)))) {
+      if ($parent = array_pop(preg_split('/[#.]/', $this->getMembers(0)))) {
         foreach (Entry::getEntries($this->source) as $entry) {
           $entry = new Entry($entry, $this->source);
           if ($entry->getName() == $parent) {

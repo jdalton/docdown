@@ -31,7 +31,7 @@ class Generator {
    * @member Generator
    * @type String
    */
-  public $source = "";
+  public $source = '';
 
   /*--------------------------------------------------------------------------*/
 
@@ -46,33 +46,33 @@ class Generator {
     if (is_array($source)) {
       $options = $source;
     } else {
-      $options["source"] = $source;
+      $options['source'] = $source;
     }
-    if (isset($options["source"]) && realpath($options["source"])) {
-      $options["path"] = $options["source"];
+    if (isset($options['source']) && realpath($options['source'])) {
+      $options['path'] = $options['source'];
     }
-    if (isset($options["path"])) {
-      preg_match("/(?<=\.)[a-z]+$/", $options["path"], $ext);
-      $options["source"] = file_get_contents($options["path"]);
+    if (isset($options['path'])) {
+      preg_match('/(?<=\.)[a-z]+$/', $options['path'], $ext);
+      $options['source'] = file_get_contents($options['path']);
       $ext = array_pop($ext);
 
-      if (!isset($options["lang"]) && $ext) {
-        $options["lang"] = $ext;
+      if (!isset($options['lang']) && $ext) {
+        $options['lang'] = $ext;
       }
-      if (!isset($options["title"])) {
-        $options["title"] = ucfirst(basename($options["path"])) . " API documentation";
+      if (!isset($options['title'])) {
+        $options['title'] = ucfirst(basename($options['path'])) . ' API documentation';
       }
     }
-    if (!isset($options["lang"])) {
-      $options["lang"] = "js";
+    if (!isset($options['lang'])) {
+      $options['lang'] = 'js';
     }
 
     $this->options = $options;
-    $this->source = str_replace(PHP_EOL, "\n", $options["source"]);
+    $this->source = str_replace(PHP_EOL, "\n", $options['source']);
     $this->entries = Entry::getEntries($this->source);
 
     foreach ($this->entries as $index => $value) {
-      $this->entries[$index] = new Entry($value, $this->source, $options["lang"]);
+      $this->entries[$index] = new Entry($value, $this->source, $options['lang']);
     }
   }
 
@@ -88,8 +88,8 @@ class Generator {
    */
   private static function format($string) {
     // mark numbers as code and italicize parentheses
-    return trim(preg_replace("/(^|\s)(\([^)]+\))/", "$1*$2*",
-      preg_replace("/ (-?\d+(?:.\d+)?)(?!\.[^\n])/", " `$1`", $string)));
+    return trim(preg_replace('/(^|\s)(\([^)]+\))/', '$1*$2*',
+      preg_replace('/ (-?\d+(?:.\d+)?)(?!\.[^\n])/', ' `$1`', $string)));
   }
 
   /**
@@ -102,17 +102,17 @@ class Generator {
    * @returns {String} The modified string.
    */
   private static function interpolate($string, $object) {
-    preg_match_all("/#\{([^}]+)\}/", $string, $tokens);
+    preg_match_all('/#\{([^}]+)\}/', $string, $tokens);
     $tokens = array_unique(array_pop($tokens));
 
     foreach ($tokens as $token) {
-      $pattern = "/#\{" . $token . "\}/";
-      $replacement = "";
+      $pattern = '/#\{' . $token . '\}/';
+      $replacement = '';
 
       if (is_object($object)) {
-        preg_match("/\(([^)]+?)\)$/", $token, $args);
-        $args = preg_split("/,\s*/", array_pop($args));
-        $method = 'get' . ucfirst(str_replace("/\([^)]+?\)$/", "", $token));
+        preg_match('/\(([^)]+?)\)$/', $token, $args);
+        $args = preg_split('/,\s*/', array_pop($args));
+        $method = 'get' . ucfirst(str_replace('/\([^)]+?\)$/', '', $token));
 
         if (method_exists($object, $method)) {
           $replacement = (string) call_user_func_array(array($object, $method), $args);
@@ -137,10 +137,10 @@ class Generator {
    * @param {String} $member The name of the member.
    * @returns {String} The url hash.
    */
-  private function getHash( $entry, $member = "" ) {
+  private function getHash( $entry, $member = '' ) {
     $entry = is_numeric($entry) ? $this->entries[$entry] : $entry;
     $member = !$member ? $entry->getMembers(0) : $member;
-    return ($member ? str_replace("#", ":", $member) . ($entry->isPlugin() ? ":" : ".") : "") . $entry->getName();
+    return ($member ? str_replace('#', ':', $member) . ($entry->isPlugin() ? ':' : '.') : '') . $entry->getName();
   }
 
   /**
@@ -152,7 +152,7 @@ class Generator {
    */
   private function getLineUrl( $entry ) {
     $entry = is_numeric($entry) ? $this->entries($entry) : $entry;
-    return $this->options["url"] . "#L" . $entry->getLineNumber();
+    return $this->options['url'] . '#L' . $entry->getLineNumber();
   }
 
   /**
@@ -164,7 +164,7 @@ class Generator {
    */
   private function getSeparator( $entry ) {
     $entry = is_numeric($entry) ? $this->entries($entry) : $entry;
-    return $entry->isPlugin() ? "#" : ".";
+    return $entry->isPlugin() ? '#' : '.';
   }
 
   /*--------------------------------------------------------------------------*/
@@ -179,7 +179,7 @@ class Generator {
     $compiling = false;
     $openTag = "\n<!-- div -->\n";
     $closeTag = "\n<!-- /div -->\n";
-    $result = array("# " . $this->options["title"]);
+    $result = array('# ' . $this->options['title']);
 
     // initialize $api array
     foreach ($this->entries as $entry) {
@@ -187,16 +187,16 @@ class Generator {
       if (!$entry->isPrivate()) {
         $name = $entry->getName();
         $members = $entry->getMembers();
-        $members = count($members) ? $members : array("");
+        $members = count($members) ? $members : array('');
 
         foreach ($members as $member) {
           // create api category arrays
           if (!isset($api[$member]) && $member) {
-            $api[$member] = (object) array( "static" => array(), "plugin" => array() );
+            $api[$member] = (object) array( 'static' => array(), 'plugin' => array() );
           }
           // append entry to api category
-          if (!$member || $entry->isCtor() || $entry->getType() == "Object") {
-            $member = ($member ? $member . ($entry->isPlugin() ? "#" : ".") : "") . $name;
+          if (!$member || $entry->isCtor() || $entry->getType() == 'Object') {
+            $member = ($member ? $member . ($entry->isPlugin() ? '#' : '.') : '') . $name;
             $entry->static = @$api[$member] ? $api[$member]->static : array();
             $entry->plugin = @$api[$member] ? $api[$member]->plugin : array();
             $api[$member]  = $entry;
@@ -215,45 +215,45 @@ class Generator {
     // custom sort for root level entries
     // TODO: see how well it handles deeper namespace traversal
     function sortCompare($a, $b){
-      $score = array( "a" => 0, "b" => 0);
-      foreach (array( "a" => $a, "b" => $b) as $key => $value) {
+      $score = array( 'a' => 0, 'b' => 0);
+      foreach (array( 'a' => $a, 'b' => $b) as $key => $value) {
         // capitalized keys that represent constructor properties are last
-        if (preg_match("/[#.][A-Z]/", $value)) {
+        if (preg_match('/[#.][A-Z]/', $value)) {
           $score[$key] = 0;
         }
         // lowercase keys with prototype properties are next to last
-        else if (preg_match("/#[a-z]/", $value)) {
+        else if (preg_match('/#[a-z]/', $value)) {
           $score[$key] = 1;
         }
         // lowercase keys with static properties next to first
-        else if (preg_match("/\.[a-z]/", $value)) {
+        else if (preg_match('/\.[a-z]/', $value)) {
           $score[$key] = 2;
         }
         // lowercase keys with no properties are first
-        else if (preg_match("/^[^#.]+$/", $value)) {
+        else if (preg_match('/^[^#.]+$/', $value)) {
           $score[$key] = 3;
         }
       }
-      $score = $score["b"] - $score["a"];
+      $score = $score['b'] - $score['a'];
       return $score ? $score : strcasecmp($a, $b);
     }
 
-    uksort($api, "sortCompare");
+    uksort($api, 'sortCompare');
 
     // sort static and plugin sub-entries
     foreach ($api as $entry) {
-      foreach (array("static", "plugin") as $kind) {
-        $sortBy = array( "a" => array(), "b" => array(), "c" => array() );
+      foreach (array('static', 'plugin') as $kind) {
+        $sortBy = array( 'a' => array(), 'b' => array(), 'c' => array() );
         foreach ($entry->{$kind} as $subentry) {
           $name = $subentry->getName();
           // functions w/o ALL-CAPs names are last
-          $sortBy["a"][] = $subentry->getType() == "Function" && !preg_match("/^[A-Z_]+$/", $name);
+          $sortBy['a'][] = $subentry->getType() == 'Function' && !preg_match('/^[A-Z_]+$/', $name);
           // ALL-CAPs properties first
-          $sortBy["b"][] = preg_match("/^[A-Z_]+$/", $name);
+          $sortBy['b'][] = preg_match('/^[A-Z_]+$/', $name);
           // lowercase alphanumeric sort
-          $sortBy["c"][] = strtolower($name);
+          $sortBy['c'][] = strtolower($name);
         }
-        array_multisort($sortBy["a"], SORT_ASC,  $sortBy["b"], SORT_DESC, $sortBy["c"], SORT_ASC, $entry->{$kind});
+        array_multisort($sortBy['a'], SORT_ASC,  $sortBy['b'], SORT_DESC, $sortBy['c'], SORT_ASC, $entry->{$kind});
       }
     }
 
@@ -265,24 +265,24 @@ class Generator {
     foreach ($api as $key => $entry) {
       $entry->hash = $this->getHash($entry);
       $entry->href = $this->getLineUrl($entry);
-      $member = str_replace(":", "#", $entry->hash);
+      $member = str_replace(':', '#', $entry->hash);
       $compiling = $compiling ? ($result[] = $closeTag) : true;
 
       // add root entry
       array_push(
         $result,
-        $openTag, "## `" . $member . "`",
-        Generator::interpolate("* [`" . $member . "`](##{hash})", $entry)
+        $openTag, '## `' . $member . '`',
+        Generator::interpolate('* [`' . $member . '`](##{hash})', $entry)
       );
 
       // add static and plugin sub-entries
-      foreach (array("static", "plugin") as $kind) {
-        if ($kind == "plugin" && count($entry->plugin)) {
+      foreach (array('static', 'plugin') as $kind) {
+        if ($kind == 'plugin' && count($entry->plugin)) {
           array_push(
             $result,
             $closeTag,
             $openTag,
-            "## `" . $member . ($entry->isCtor() ? ".prototype`" : "`")
+            '## `' . $member . ($entry->isCtor() ? '.prototype`' : '`')
           );
         }
         foreach ($entry->{$kind} as $subentry) {
@@ -290,7 +290,7 @@ class Generator {
           $subentry->href = $this->getLineUrl($subentry);
           $subentry->member = $member;
           $subentry->separator = $this->getSeparator($subentry);
-          $result[] = Generator::interpolate("* [`#{member}#{separator}#{name}`](##{hash})", $subentry);
+          $result[] = Generator::interpolate('* [`#{member}#{separator}#{name}`](##{hash})', $subentry);
         }
       }
     }
@@ -308,20 +308,20 @@ class Generator {
       $member = $entry->getName();
       $compiling = $compiling ? ($result[] = $closeTag) : true;
 
-      array_push($result, $openTag, "## `" . $member . "`");
+      array_push($result, $openTag, '## `' . $member . '`');
 
-      foreach (array($entry, "static", "plugin") as $kind) {
+      foreach (array($entry, 'static', 'plugin') as $kind) {
         $subentries = is_string($kind) ? $entry->{$kind} : array($kind);
 
         // title
-        if ($entry->getType() != "Object" && count($subentries) && $subentries[0] != $kind) {
-          if ($kind == "plugin") {
+        if ($entry->getType() != 'Object' && count($subentries) && $subentries[0] != $kind) {
+          if ($kind == 'plugin') {
             $result[] = $closeTag;
           }
           array_push(
             $result,
             $openTag,
-            "## `" . $member . ($kind == "plugin" ? ".prototype`" : "`"),
+            '## `' . $member . ($kind == 'plugin' ? '.prototype`' : '`'),
             Generator::interpolate("### <a id=\"#{hash}\" href=\"#{href}\" title=\"View in source\">`#{member}#{call}`</a>\n#{desc}\n[&#9650;][1]", $entry)
           );
         }
@@ -337,27 +337,27 @@ class Generator {
 
           // @param
           if (count($params = $subentry->getParams())) {
-            array_push($result, "", "#### Arguments");
+            array_push($result, '', '#### Arguments');
             foreach ($params as $index => $param) {
-              $result[] = Generator::interpolate("#{num}. `#{name}` (#{type}): #{desc}", array(
-                "desc" => $param[2],
-                "name" => $param[1],
-                "num"  => $index + 1,
-                "type" => $param[0]
+              $result[] = Generator::interpolate('#{num}. `#{name}` (#{type}): #{desc}', array(
+                'desc' => $param[2],
+                'name' => $param[1],
+                'num'  => $index + 1,
+                'type' => $param[0]
               ));
             }
           }
           // @returns
           if (count($returns = $subentry->getReturns())) {
             array_push(
-              $result, "",
-              "#### Returns",
-              Generator::interpolate("(#{type}): #{desc}", array("desc" => $returns[1], "type" => $returns[0]))
+              $result, '',
+              '#### Returns',
+              Generator::interpolate('(#{type}): #{desc}', array('desc' => $returns[1], 'type' => $returns[0]))
             );
           }
           // @example
           if ($example = $subentry->getExample()) {
-            array_push($result, "", "#### Example", $example);
+            array_push($result, '', '#### Example', $example);
           }
           array_push($result, $closeTag);
         }
@@ -365,10 +365,10 @@ class Generator {
     }
 
     // close tags add TOC link reference
-    array_push($result, $closeTag, $closeTag, "", "  [1]: #readme \"Jump back to the TOC.\"");
+    array_push($result, $closeTag, $closeTag, '', '  [1]: #readme "Jump back to the TOC."');
 
     // cleanup whitespace
-    return trim(preg_replace("/ +\n/", "\n", join($result, "\n")));
+    return trim(preg_replace('/ +\n/', "\n", join($result, "\n")));
   }
 }
 ?>

@@ -38,19 +38,19 @@ Generates Markdown from JSDoc entries in a given file.
 // specify a file path
 $markdown = docdown(array(
   // path to js file
-  "path" => $filepath,
+  'path' => $filepath,
   // url used to reference line numbers in code
-  "url" => "https://github.com/username/project/blob/master/my.js"
+  'url' => 'https://github.com/username/project/blob/master/my.js'
 ));
 
 // or pass raw js
 $markdown = docdown(array(
   // raw JavaScript source
-  "source" => $rawJS,
+  'source' => $rawJS,
   // documentation title
-  "title" => "My API Documentation",
+  'title' => 'My API Documentation',
   // url used to reference line numbers in code
-  "url" => "https://github.com/username/project/blob/master/my.js"
+  'url' => 'https://github.com/username/project/blob/master/my.js'
 ));
 ~~~
 
