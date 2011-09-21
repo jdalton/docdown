@@ -195,7 +195,8 @@ class Generator {
             $api[$member] = (object) array( 'static' => array(), 'plugin' => array() );
           }
           // append entry to api category
-          if (!$member || $entry->isCtor() || $entry->getType() == 'Object') {
+          if (!$member || $entry->isCtor() || ($entry->getType() == 'Object' &&
+                !preg_match('/[=:]\s*null\s*[,;]?$/', $entry->entry))) {
             $member = ($member ? $member . ($entry->isPlugin() ? '#' : '.') : '') . $name;
             $entry->static = @$api[$member] ? $api[$member]->static : array();
             $entry->plugin = @$api[$member] ? $api[$member]->plugin : array();
