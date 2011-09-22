@@ -11,7 +11,7 @@
     ? $_SERVER['argv'][1] : basename($file);
   /*--------------------------------------------------------------------------*/
 
-  require('../vendor/docdown/docdown.php');
+  require('../docdown.php');
 
   // generate Markdown
   $markdown = docdown(array(
