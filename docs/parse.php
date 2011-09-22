@@ -7,8 +7,11 @@
 
   // output filename
   $output = isset($_GET['o'])
-    ? $_GET['o'] : isset($_SERVER['argv'][1])
-    ? $_SERVER['argv'][1] : basename($file);
+    ? $_GET['o']
+    : isset($_SERVER['argv'][1])
+      ? $_SERVER['argv'][1]
+      : basename($file);
+
   /*--------------------------------------------------------------------------*/
 
   require('../docdown.php');
