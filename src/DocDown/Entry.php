@@ -63,27 +63,52 @@ class Entry {
   /*--------------------------------------------------------------------------*/
 
   /**
+   * Checks if the entry is a function reference.
+   * @private
+   * @member Entry
+   * @returns {Boolean} Returns `true` if the entry is a function reference, else `false`.
+   */
+  private function isFunction() {
+    return !!(
+      $this->isCtor() ||
+      count($this->getParams()) ||
+      count($this->getReturns()) ||
+      preg_match('/\*\s*@function\b/', $this->entry)
+    );
+  }
+
+  /*--------------------------------------------------------------------------*/
+
+  /**
    * Extracts the function call from the entry.
    * @member Entry
    * @returns {String} The function call.
    */
   public function getCall() {
     // make regexp delimiter `@` to avoid problems with members containing `#`
-    preg_match('@\*/\s*(?:function ([^(]*)|([^:=,]*))@', $this->entry, $result);
+    preg_match('#\*/\s*(?:function ([^(]*)|(.*?)(?=[:=,]|return\b))#', $this->entry, $result);
     if ($result = array_pop($result)) {
       $result = array_pop(explode('var ', trim(trim(array_pop(explode('.', $result))), "'")));
     }
-    if (count($params = $this->getParams())) {
+    // resolve name
+    preg_match('#\*\s*@name\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $name);
+    if (count($name)) {
+      $name = trim($name[1]);
+    } else {
+      $name = $result;
+    }
+    if ($this->isFunction()) {
       // compile
       $result = array($result);
+      $params = $this->getParams();
       foreach ($params as $param) {
         $result[] = $param[1];
       }
       // format
-      $result = array_shift($result) .'('. implode($result, ', ') .')';
+      $result = $name .'('. implode(array_slice($result, 1), ', ') .')';
       $result = str_replace(', [', ' [, ', str_replace('], [', ', ', $result));
     }
-    return $result;
+    return $result ? $result : $name;
   }
 
   /**
@@ -92,11 +117,11 @@ class Entry {
    * @returns {String} The entry description.
    */
   public function getDesc() {
-    preg_match('#/\*\*(?:\s*\*)? ([^@]+)#', $this->entry, $result);
+    preg_match('#/\*\*(?:\s*\*)?([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
     if (count($result)) {
       $type = $this->getType();
-      $result = preg_replace('/\n\s*\* ?/', ' ', $result[1]);
-      $result = ($type == 'Function' ? '' : '(' . str_replace('|', ', ', trim($type, '{}')) . '): ') . trim($result);
+      $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
+      $result = ($type == 'Function' ? '' : '(' . str_replace('|', ', ', trim($type, '{}')) . '): ') . $result;
     }
     return $result;
   }
@@ -107,9 +132,10 @@ class Entry {
    * @returns {String} The entry `example` data.
    */
   public function getExample() {
-    preg_match('#\*\s*@example([\s\S]*)?(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
+    preg_match('#\*\s*@example\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
     if (count($result)) {
-      $result = '~~~ ' . $this->lang . "\n" . trim(preg_replace('/\n\s*\* ?/', "\n", $result[1])) . "\n~~~";
+      $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
+      $result = '~~~ ' . $this->lang . "\n" . $result . "\n~~~";
     }
     return $result;
   }
@@ -131,9 +157,10 @@ class Entry {
    * @returns {Array|String} The entry `member` data.
    */
   public function getMembers( $index = null ) {
-    preg_match('/\*\s*@member(?:Of)? ([^\n]+)/', $this->entry, $result);
+    preg_match('#\*\s*@member(?:Of)?\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
     if (count($result)) {
-      $result = preg_split('/,\s*/', $result[1]);
+      $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
+      $result = preg_split('/,\s*/', $result);
     }
     return $index !== null ? @$result[$index] : $result;
   }
@@ -144,8 +171,13 @@ class Entry {
    * @returns {String} The entry `name` data.
    */
   public function getName() {
-    preg_match('/\*\s*@name ([^\n]+)/', $this->entry, $result);
-    return count($result) ? $result[1] : array_shift(explode('(', $this->getCall()));
+    preg_match('#\*\s*@name\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
+    if (count($result)) {
+      $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
+    } else {
+      $result = array_shift(explode('(', $this->getCall()));
+    }
+    return $result;
   }
 
   /**
@@ -155,7 +187,7 @@ class Entry {
    * @returns {Array} The entry `param` data.
    */
   public function getParams( $index = null ) {
-    preg_match_all('/\*\s*@param \{([^}]+)\} (\[[^]]+\]|[$\w]+) ([^\n]+)/', $this->entry, $result);
+    preg_match_all('#\*\s*@param\s+\{([^}]+)\}\s+(\[[^]]+\]|[$\w]+)\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#i', $this->entry, $result);
     if (count($result = array_filter(array_slice($result, 1)))) {
       // repurpose array
       foreach ($result as $param) {
@@ -163,7 +195,7 @@ class Entry {
           if (!is_array($result[0][$key])) {
             $result[0][$key] = array();
           }
-          $result[0][$key][] = $value;
+          $result[0][$key][] = trim(preg_replace('/\n\s*\* ?/', ' ', $value));
         }
       }
       $result = $result[0];
@@ -177,10 +209,11 @@ class Entry {
    * @returns {String} The entry `returns` data.
    */
   public function getReturns() {
-    preg_match('/\*\s*@returns \{([^}]+)\} ([^*]+)/', $this->entry, $result);
+    preg_match('#\*\s*@returns\s+\{([^}]+)\}\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
     if (count($result)) {
       $result = array_map('trim', array_slice($result, 1));
       $result[0] = str_replace('|', ', ', $result[0]);
+      $result[1] = preg_replace('/\n\s*\* ?/', ' ', $result[1]);
     }
     return $result;
   }
@@ -191,11 +224,13 @@ class Entry {
    * @returns {String} The entry `type` data.
    */
   public function getType() {
-    preg_match('/\*\s*@type ([^\n]+)/', $this->entry, $result);
-    return count($result) ? $result[1] :
-      ($this->isCtor() || count($this->getParams()) || count($this->getReturns()) ||
-      preg_match('/\*\s*@function\b/', $this->entry) ||
-      strpos($this->getCall(), '(') !== false ? 'Function' : 'Unknown');
+    preg_match('#\*\s*@type\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
+    if (count($result)) {
+      $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
+    } else {
+      $result = $this->isFunction() ? 'Function' : 'Unknown';
+    }
+    return $result;
   }
 
   /**
