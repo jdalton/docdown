@@ -85,12 +85,12 @@ class Entry {
    * @returns {String} The function call.
    */
   public function getCall() {
-    // make regexp delimiter `@` to avoid problems with members containing `#`
     preg_match('#\*/\s*(?:function ([^(]*)|(.*?)(?=[:=,]|return\b))#', $this->entry, $result);
     if ($result = array_pop($result)) {
       $result = array_pop(explode('var ', trim(trim(array_pop(explode('.', $result))), "'")));
     }
     // resolve name
+    // avoid $this->getName() because it calls $this->getCall()
     preg_match('#\*\s*@name\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $name);
     if (count($name)) {
       $name = trim($name[1]);
