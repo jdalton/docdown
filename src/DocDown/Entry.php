@@ -91,14 +91,15 @@ class Entry {
     }
     // resolve name
     // avoid $this->getName() because it calls $this->getCall()
-    preg_match('#\*\s*@name\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $name);
+    preg_match('#\*\s*@name\s+([^\n]+)#', $this->entry, $name);
     if (count($name)) {
       $name = trim($name[1]);
     } else {
       $name = $result;
     }
+    // compile function call syntax
     if ($this->isFunction()) {
-      // compile
+      // compose parts
       $result = array($result);
       $params = $this->getParams();
       foreach ($params as $param) {
@@ -157,7 +158,7 @@ class Entry {
    * @returns {Array|String} The entry `member` data.
    */
   public function getMembers( $index = null ) {
-    preg_match('#\*\s*@member(?:Of)?\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
+    preg_match('#\*\s*@member(?:Of)?\s+([^\n]+)#', $this->entry, $result);
     if (count($result)) {
       $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
       $result = preg_split('/,\s*/', $result);
@@ -171,7 +172,7 @@ class Entry {
    * @returns {String} The entry `name` data.
    */
   public function getName() {
-    preg_match('#\*\s*@name\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
+    preg_match('#\*\s*@name\s+([^\n]+)#', $this->entry, $result);
     if (count($result)) {
       $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
     } else {
@@ -224,7 +225,7 @@ class Entry {
    * @returns {String} The entry `type` data.
    */
   public function getType() {
-    preg_match('#\*\s*@type\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
+    preg_match('#\*\s*@type\s+([^\n]+)#', $this->entry, $result);
     if (count($result)) {
       $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
     } else {
