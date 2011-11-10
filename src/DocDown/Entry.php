@@ -95,7 +95,7 @@ class Entry {
     preg_match('#/\*\*(?:\s*\*)? ([^@]+)#', $this->entry, $result);
     if (count($result)) {
       $type = $this->getType();
-      $result = array_shift(preg_split('#\n\s*\* |\*/#', $result[1]));
+      $result = preg_replace('/\n\s*\* ?/', ' ', $result[1]);
       $result = ($type == 'Function' ? '' : '(' . str_replace('|', ', ', trim($type, '{}')) . '): ') . trim($result);
     }
     return $result;
