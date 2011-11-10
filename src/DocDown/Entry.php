@@ -56,7 +56,7 @@ class Entry {
    * @returns {Array} The array of entries.
    */
   public static function getEntries( $source ) {
-    preg_match_all('#/\*(?![-!])[\s\S]*?\*/\s*[^=\n;]+#', $source, $result);
+    preg_match_all('#/\*\*(?![-!])[\s\S]*?\*/\s*[^=\n;]+#', $source, $result);
     return array_pop($result);
   }
 
