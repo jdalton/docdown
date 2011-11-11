@@ -121,7 +121,7 @@ class Entry {
     preg_match('#/\*\*(?:\s*\*)?([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
     if (count($result)) {
       $type = $this->getType();
-      $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
+      $result = trim(preg_replace('/(?:^|\n)\s*\* ?/', ' ', $result[1]));
       $result = ($type == 'Function' ? '' : '(' . str_replace('|', ', ', trim($type, '{}')) . '): ') . $result;
     }
     return $result;
@@ -135,7 +135,7 @@ class Entry {
   public function getExample() {
     preg_match('#\*\s*@example\s+([\s\S]*?)(?=\*\s\@[a-z]|\*/)#', $this->entry, $result);
     if (count($result)) {
-      $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
+      $result = trim(preg_replace('/(?:^|\n)\s*\* ?/', "\n", $result[1]));
       $result = '~~~ ' . $this->lang . "\n" . $result . "\n~~~";
     }
     return $result;
@@ -160,7 +160,7 @@ class Entry {
   public function getMembers( $index = null ) {
     preg_match('#\*\s*@member(?:Of)?\s+([^\n]+)#', $this->entry, $result);
     if (count($result)) {
-      $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
+      $result = trim(preg_replace('/(?:^|\n)\s*\* ?/', ' ', $result[1]));
       $result = preg_split('/,\s*/', $result);
     }
     return $index !== null ? @$result[$index] : $result;
@@ -174,7 +174,7 @@ class Entry {
   public function getName() {
     preg_match('#\*\s*@name\s+([^\n]+)#', $this->entry, $result);
     if (count($result)) {
-      $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
+      $result = trim(preg_replace('/(?:^|\n)\s*\* ?/', ' ', $result[1]));
     } else {
       $result = array_shift(explode('(', $this->getCall()));
     }
@@ -196,7 +196,7 @@ class Entry {
           if (!is_array($result[0][$key])) {
             $result[0][$key] = array();
           }
-          $result[0][$key][] = trim(preg_replace('/\n\s*\* ?/', ' ', $value));
+          $result[0][$key][] = trim(preg_replace('/(?:^|\n)\s*\* ?/', ' ', $value));
         }
       }
       $result = $result[0];
@@ -214,7 +214,7 @@ class Entry {
     if (count($result)) {
       $result = array_map('trim', array_slice($result, 1));
       $result[0] = str_replace('|', ', ', $result[0]);
-      $result[1] = preg_replace('/\n\s*\* ?/', ' ', $result[1]);
+      $result[1] = preg_replace('/(?:^|\n)\s*\* ?/', ' ', $result[1]);
     }
     return $result;
   }
@@ -227,7 +227,7 @@ class Entry {
   public function getType() {
     preg_match('#\*\s*@type\s+([^\n]+)#', $this->entry, $result);
     if (count($result)) {
-      $result = trim(preg_replace('/\n\s*\* ?/', ' ', $result[1]));
+      $result = trim(preg_replace('/(?:^|\n)\s*\* ?/', ' ', $result[1]));
     } else {
       $result = $this->isFunction() ? 'Function' : 'Unknown';
     }
