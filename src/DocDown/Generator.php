@@ -192,11 +192,13 @@ class Generator {
         foreach ($members as $member) {
           // create api category arrays
           if (!isset($api[$member]) && $member) {
-            $api[$member] = (object) array( 'static' => array(), 'plugin' => array() );
+            $api[$member] = new Entry('', '', $entry->lang);
+            $api[$member]->static = array();
+            $api[$member]->plugin = array();
           }
           // append entry to api category
           if (!$member || $entry->isCtor() || ($entry->getType() == 'Object' &&
-                !preg_match('/[=:]\s*null\s*[,;]?$/', $entry->entry))) {
+              !preg_match('/[=:]\s*null\s*[,;]?$/', $entry->entry))) {
             $member = ($member ? $member . ($entry->isPlugin() ? '#' : '.') : '') . $name;
             $entry->static = @$api[$member] ? $api[$member]->static : array();
             $entry->plugin = @$api[$member] ? $api[$member]->plugin : array();
