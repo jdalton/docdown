@@ -268,7 +268,10 @@ class Generator {
     foreach ($api as $key => $entry) {
       $entry->hash = $this->getHash($entry);
       $entry->href = $this->getLineUrl($entry);
+
       $member = str_replace(':', '#', $entry->hash);
+      $entry->member = preg_replace('/' . $entry->getName() . '$/', '', $member);
+
       $compiling = $compiling ? ($result[] = $closeTag) : true;
 
       // add root entry
@@ -308,7 +311,7 @@ class Generator {
 
     foreach ($api as $entry) {
       // add root entry
-      $member = $entry->getName();
+      $member = $entry->member . $entry->getName();
       $compiling = $compiling ? ($result[] = $closeTag) : true;
 
       array_push($result, $openTag, '## `' . $member . '`');
