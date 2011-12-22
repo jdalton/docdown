@@ -217,7 +217,7 @@ class Generator {
 
     // custom sort for root level entries
     // TODO: see how well it handles deeper namespace traversal
-    function sortCompare($a, $b){
+    function sortCompare($a, $b) {
       $score = array( 'a' => 0, 'b' => 0);
       foreach (array( 'a' => $a, 'b' => $b) as $key => $value) {
         // capitalized keys that represent constructor properties are last

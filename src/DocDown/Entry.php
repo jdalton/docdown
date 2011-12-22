@@ -38,7 +38,7 @@ class Entry {
    * @constructor
    * @param {String} $entry The documentation entry to analyse.
    * @param {String} $source The source code.
-   * @param {String} $lang The language highlighter used code examples.
+   * @param {String} $lang The language highlighter used for code examples.
    */
   public function __construct( $entry, $source, $lang = 'js' ) {
     $this->entry = $entry;
