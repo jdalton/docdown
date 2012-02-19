@@ -33,7 +33,7 @@ cd docdown
 
 Feel free to fork if you see possible improvements!
 
-## Authors
+## Author
 
 * [John-David Dalton](http://allyoucanleet.com/)
   [![twitter/jdalton](http://gravatar.com/avatar/299a3d891ff1920b69c364d061007043?s=70)](https://twitter.com/jdalton "Follow @jdalton on Twitter")
