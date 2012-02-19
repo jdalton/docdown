@@ -4,7 +4,7 @@ A simple JSDoc to Markdown documentation generator.
 
 ## Documentation
 
-The documentation for Docdown can be viewed here: [/docs/README.md](https://github.com/jdalton/docdown/blob/master/docs/README.md#readme)
+The documentation for Docdown can be viewed here: [/doc/README.md](https://github.com/jdalton/docdown/blob/master/doc/README.md#readme)
 
 For a list of upcoming features, check out our [roadmap](https://github.com/jdalton/docdown/wiki/Roadmap).
 
