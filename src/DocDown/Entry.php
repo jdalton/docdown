@@ -1,9 +1,4 @@
 <?php
-/*!
- * This file is part of the DocDown package.
- * Copyright 2011-2012 John-David Dalton <http://allyoucanleet.com/>
- * Available under MIT license <http://mths.be/mit>
- */
 
 /**
  * A class to simplify parsing a single JSDoc entry.
