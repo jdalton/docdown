@@ -7,21 +7,24 @@ class Entry {
 
   /**
    * The documentation entry.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @type String
    */
   public $entry = '';
 
   /**
    * The language highlighter used for code examples.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @type String
    */
   public $lang = '';
 
   /**
    * The source code.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @type String
    */
   public $source = '';
@@ -29,7 +32,8 @@ class Entry {
   /*--------------------------------------------------------------------------*/
 
   /**
-   * Entry constructor.
+   * The Entry constructor.
+   *
    * @constructor
    * @param {String} $entry The documentation entry to analyse.
    * @param {String} $source The source code.
@@ -45,8 +49,9 @@ class Entry {
 
   /**
    * Extracts the documentation entries from source code.
+   *
    * @static
-   * @member Entry
+   * @memberOf Entry
    * @param {String} $source The source code.
    * @returns {Array} The array of entries.
    */
@@ -59,8 +64,9 @@ class Entry {
 
   /**
    * Checks if the entry is a function reference.
+   *
    * @private
-   * @member Entry
+   * @memberOf Entry
    * @returns {Boolean} Returns `true` if the entry is a function reference, else `false`.
    */
   private function isFunction() {
@@ -76,7 +82,8 @@ class Entry {
 
   /**
    * Extracts the function call from the entry.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {String} The function call.
    */
   public function getCall() {
@@ -109,7 +116,8 @@ class Entry {
 
   /**
    * Extracts the entry description.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {String} The entry description.
    */
   public function getDesc() {
@@ -124,7 +132,8 @@ class Entry {
 
   /**
    * Extracts the entry `example` data.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {String} The entry `example` data.
    */
   public function getExample() {
@@ -138,7 +147,8 @@ class Entry {
 
   /**
    * Resolves the line number of the entry.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {Number} The line number.
    */
   public function getLineNumber() {
@@ -148,7 +158,8 @@ class Entry {
 
   /**
    * Extracts the entry `member` data.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @param {Number} $index The index of the array value to return.
    * @returns {Array|String} The entry `member` data.
    */
@@ -163,7 +174,8 @@ class Entry {
 
   /**
    * Extracts the entry `name` data.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {String} The entry `name` data.
    */
   public function getName() {
@@ -178,7 +190,8 @@ class Entry {
 
   /**
    * Extracts the entry `param` data.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @param {Number} $index The index of the array value to return.
    * @returns {Array} The entry `param` data.
    */
@@ -201,7 +214,8 @@ class Entry {
 
   /**
    * Extracts the entry `returns` data.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {String} The entry `returns` data.
    */
   public function getReturns() {
@@ -216,7 +230,8 @@ class Entry {
 
   /**
    * Extracts the entry `type` data.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {String} The entry `type` data.
    */
   public function getType() {
@@ -231,7 +246,8 @@ class Entry {
 
   /**
    * Checks if an entry is a constructor.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {Boolean} Returns true if a constructor, else false.
    */
   public function isCtor() {
@@ -240,7 +256,8 @@ class Entry {
 
   /**
    * Checks if an entry *is* assigned to a prototype.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {Boolean} Returns true if assigned to a prototype, else false.
    */
   public function isPlugin() {
@@ -249,7 +266,8 @@ class Entry {
 
   /**
    * Checks if an entry is private.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {Boolean} Returns true if private, else false.
    */
   public function isPrivate() {
@@ -258,7 +276,8 @@ class Entry {
 
   /**
    * Checks if an entry is *not* assigned to a prototype.
-   * @member Entry
+   *
+   * @memberOf Entry
    * @returns {Boolean} Returns true if not assigned to a prototype, else false.
    */
   public function isStatic() {
