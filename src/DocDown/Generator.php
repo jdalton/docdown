@@ -9,21 +9,24 @@ class Generator {
 
   /**
    * An array of JSDoc entries.
-   * @member Generator
+   *
+   * @memberOf Generator
    * @type Array
    */
   public $entries = array();
 
   /**
    * An options array used to configure the generator.
-   * @member Generator
+   *
+   * @memberOf Generator
    * @type Array
    */
   public $options = array();
 
   /**
    * The entire file's source code.
-   * @member Generator
+   *
+   * @memberOf Generator
    * @type String
    */
   public $source = '';
@@ -31,7 +34,8 @@ class Generator {
   /*--------------------------------------------------------------------------*/
 
   /**
-   * Generator constructor.
+   * The Generator constructor.
+   *
    * @constructor
    * @param {String} $source The source code to parse.
    * @param {Array} $options The options array.
@@ -75,9 +79,10 @@ class Generator {
 
   /**
    * Performs common string formatting operations.
+   *
    * @private
    * @static
-   * @member Generator
+   * @memberOf Generator
    * @param {String} $string The string to format.
    * @returns {String} The formatted string.
    */
@@ -89,9 +94,10 @@ class Generator {
 
   /**
    * Modify a string by replacing named tokens with matching assoc. array values.
+   *
    * @private
    * @static
-   * @member Generator
+   * @memberOf Generator
    * @param {String} $string The string to modify.
    * @param {Array|Object} $object The template object.
    * @returns {String} The modified string.
@@ -126,8 +132,9 @@ class Generator {
 
   /**
    * Resolves the entry's hash used to navigate the documentation.
+   *
    * @private
-   * @member Generator
+   * @memberOf Generator
    * @param {Number|Object} $entry The entry object.
    * @param {String} $member The name of the member.
    * @returns {String} The url hash.
@@ -140,8 +147,9 @@ class Generator {
 
   /**
    * Resolves the entry's url for the specific line number.
+   *
    * @private
-   * @member Generator
+   * @memberOf Generator
    * @param {Number|Object} $entry The entry object.
    * @returns {String} The url.
    */
@@ -152,8 +160,9 @@ class Generator {
 
   /**
    * Extracts the character used to separate the entry's name from its member.
+   *
    * @private
-   * @member Generator
+   * @memberOf Generator
    * @param {Number|Object} $entry The entry object.
    * @returns {String} The separator.
    */
@@ -166,7 +175,8 @@ class Generator {
 
   /**
    * Generates Markdown from JSDoc entries.
-   * @member Generator
+   * 
+   * @memberOf Generator
    * @returns {String} The rendered Markdown.
    */
   public function generate() {
