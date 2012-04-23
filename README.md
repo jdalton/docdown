@@ -31,7 +31,7 @@ git clone https://github.com/docdown/docdown.git
 cd docdown
 ~~~
 
-Feel free to fork if you see possible improvements!
+Feel free to fork and send pull requests if you see improvements!
 
 ## Author
 
