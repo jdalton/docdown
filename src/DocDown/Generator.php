@@ -142,7 +142,11 @@ class Generator {
   private function getHash( $entry, $member = '' ) {
     $entry = is_numeric($entry) ? $this->entries[$entry] : $entry;
     $member = !$member ? $entry->getMembers(0) : $member;
-    return ($member ? str_replace('#', ':', $member) . ($entry->isPlugin() ? ':' : '.') : '') . $entry->getName();
+    $result = ($member ? $member . ($entry->isPlugin() ? 'prototype' : '') : '') . $entry->getCall();
+    $result = preg_replace('/\(\[|\[\]/', '', $result);
+    $result = preg_replace('/[ =\'"{}.()\]]/', '', $result);
+    $result = preg_replace('/[[#,]/', '-', $result);
+    return strtolower($result);
   }
 
   /**
@@ -168,14 +172,14 @@ class Generator {
    */
   private function getSeparator( $entry ) {
     $entry = is_numeric($entry) ? $this->entries($entry) : $entry;
-    return $entry->isPlugin() ? '#' : '.';
+    return $entry->isPlugin() ? '.prototype.' : '.';
   }
 
   /*--------------------------------------------------------------------------*/
 
   /**
    * Generates Markdown from JSDoc entries.
-   * 
+   *
    * @memberOf Generator
    * @returns {String} The rendered Markdown.
    */
@@ -274,7 +278,9 @@ class Generator {
       $entry->hash = $this->getHash($entry);
       $entry->href = $this->getLineUrl($entry);
 
-      $member = str_replace(':', '#', $entry->hash);
+      $member = $entry->getMembers(0);
+      $member = ($member ? $member . ($entry->isPlugin() ? '.prototype.' : '.') : '') . $entry->getName();
+
       $entry->member = preg_replace('/' . $entry->getName() . '$/', '', $member);
 
       $compiling = $compiling ? ($result[] = $closeTag) : true;
@@ -325,15 +331,15 @@ class Generator {
         $subentries = is_string($kind) ? $entry->{$kind} : array($kind);
 
         // title
-        if ($entry->getType() != 'Object' && count($subentries) && $subentries[0] != $kind) {
+        if ($kind != 'static' && $entry->getType() != 'Object' &&
+              count($subentries) && $subentries[0] != $kind) {
           if ($kind == 'plugin') {
             $result[] = $closeTag;
           }
           array_push(
             $result,
             $openTag,
-            '## `' . $member . ($kind == 'plugin' ? '.prototype`' : '`'),
-            Generator::interpolate("### <a id=\"#{hash}\" href=\"#{href}\" title=\"View in source\">`#{member}#{call}`</a>\n#{desc}\n[&#9650;][1]", $entry)
+            '## `' . $member . ($kind == 'plugin' ? '.prototype`' : '`')
           );
         }
 
@@ -343,7 +349,8 @@ class Generator {
           array_push(
             $result,
             $openTag,
-            Generator::interpolate("### <a id=\"#{hash}\" href=\"#{href}\" title=\"View in source\">`#{member}#{separator}#{call}`</a>\n#{desc}\n[&#9650;][1]", $subentry)
+            $openTag,
+            Generator::interpolate("### `#{member}#{separator}#{call}`\n<a id=\"#{hash}\" href=\"##{hash}\">#</a> [&#x24C8;](#{href} \"View in source\") [&#x24C9;][1]\n\n#{desc}", $subentry)
           );
 
           // @param
@@ -370,7 +377,7 @@ class Generator {
           if ($example = $subentry->getExample()) {
             array_push($result, '', '#### Example', $example);
           }
-          array_push($result, $closeTag);
+          array_push($result, "\n* * *", $closeTag);
         }
       }
     }
