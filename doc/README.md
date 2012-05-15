@@ -5,8 +5,8 @@
 
 <!-- div -->
 
-## `docdown`
-* [`docdown`](#docdown)
+## <a id="toc"></a>`docdown`
+* [`docdown`](#docdown$optionsarray)
 
 <!-- /div -->
 
@@ -23,9 +23,13 @@
 
 <!-- div -->
 
-### <a id="docdown" href="https://github.com/jdalton/docdown/blob/master/docdown.php#L34" title="View in source">`docdown([$options=array()])`</a>
+
+<!-- div -->
+
+### <a id="docdown$optionsarray"></a>`docdown([$options=array()])`
+<a href="#docdown$optionsarray">#</a> [&#x24C8;](https://github.com/jdalton/docdown/blob/master/docdown.php#L34 "View in source") [&#x24C9;][1]
+
 Generates Markdown from JSDoc entries in a given file.
-[&#9650;][1]
 
 #### Arguments
 1. `[$options=array()]` *(Array)*: The options array.
@@ -54,13 +58,15 @@ $markdown = docdown(array(
 ));
 ~~~
 
+* * *
+
+<!-- /div -->
+
+
 <!-- /div -->
 
 
 <!-- /div -->
 
 
-<!-- /div -->
-
-
-  [1]: #readme "Jump back to the TOC."
+  [1]: #toc "Jump back to the TOC."

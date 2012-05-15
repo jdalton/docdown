@@ -288,7 +288,7 @@ class Generator {
       // add root entry
       array_push(
         $result,
-        $openTag, '## `' . $member . '`',
+        $openTag, '## ' . (count($result) == 2 ? '<a id="toc"></a>' : '') . '`' . $member . '`',
         Generator::interpolate('* [`' . $member . '`](##{hash})', $entry)
       );
 
@@ -350,7 +350,7 @@ class Generator {
             $result,
             $openTag,
             $openTag,
-            Generator::interpolate("### `#{member}#{separator}#{call}`\n<a id=\"#{hash}\" href=\"##{hash}\">#</a> [&#x24C8;](#{href} \"View in source\") [&#x24C9;][1]\n\n#{desc}", $subentry)
+            Generator::interpolate("### <a id=\"#{hash}\"></a>`#{member}#{separator}#{call}`\n<a href=\"##{hash}\">#</a> [&#x24C8;](#{href} \"View in source\") [&#x24C9;][1]\n\n#{desc}", $subentry)
           );
 
           // @param
@@ -383,7 +383,7 @@ class Generator {
     }
 
     // close tags add TOC link reference
-    array_push($result, $closeTag, $closeTag, '', '  [1]: #readme "Jump back to the TOC."');
+    array_push($result, $closeTag, $closeTag, '', '  [1]: #toc "Jump back to the TOC."');
 
     // cleanup whitespace
     return trim(preg_replace('/ +\n/', "\n", join($result, "\n")));
