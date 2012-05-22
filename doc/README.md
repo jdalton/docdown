@@ -23,9 +23,6 @@
 
 <!-- div -->
 
-
-<!-- div -->
-
 ### <a id="docdown$optionsarray"></a>`docdown([$options=array()])`
 <a href="#docdown$optionsarray">#</a> [&#x24C8;](https://github.com/jdalton/docdown/blob/master/docdown.php#L34 "View in source") [&#x24C9;][1]
 

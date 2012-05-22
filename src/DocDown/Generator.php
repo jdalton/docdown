@@ -349,7 +349,6 @@ class Generator {
           array_push(
             $result,
             $openTag,
-            $openTag,
             Generator::interpolate("### <a id=\"#{hash}\"></a>`#{member}#{separator}#{call}`\n<a href=\"##{hash}\">#</a> [&#x24C8;](#{href} \"View in source\") [&#x24C9;][1]\n\n#{desc}", $subentry)
           );
 
