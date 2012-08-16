@@ -21,7 +21,7 @@
   // generate Markdown
   $markdown = docdown(array(
     'path' => '../' . $file,
-    'title' => 'Docdown <sup>v1.0.0-pre</sup>',
+    'title' => 'Docdown <sup>v1.0.0</sup>',
     'url'  => 'https://github.com/jdalton/docdown/blob/master/docdown.php'
   ));
 

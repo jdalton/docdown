@@ -1,11 +1,11 @@
-# Docdown <sup>v1.0.0-pre</sup>
+# Docdown <sup>v1.0.0</sup>
 
 <!-- div -->
 
 
 <!-- div -->
 
-## <a id="toc"></a>`docdown`
+## <a id="docdown"></a>`docdown`
 * [`docdown`](#docdown$optionsarray)
 
 <!-- /div -->
@@ -66,4 +66,4 @@ $markdown = docdown(array(
 <!-- /div -->
 
 
-  [1]: #toc "Jump back to the TOC."
+  [1]: #docdown "Jump back to the TOC."
