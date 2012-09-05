@@ -50,7 +50,9 @@ class Alias {
    */
   public function getAliases( $index = null ) {
     $result = array();
-    return $index !== null ? @$result[$index] : $result;
+    return $index !== null
+      ? @$result[$index]
+      : $result;
   }
 
   /**
@@ -101,7 +103,9 @@ class Alias {
    * @returns {Array|String} The owner entry's `member` data.
    */
   public function getMembers( $index = null ) {
-    return $this->_members;
+    return $index !== null
+      ? @$this->_members[$index]
+      : $this->_members;
   }
 
   /**
@@ -122,7 +126,9 @@ class Alias {
    * @returns {Array} The owner entry's `param` data.
    */
   public function getParams( $index = null ) {
-    return $this->_params;
+    return $index !== null
+      ? @$this->_params[$index]
+      : $this->_params;
   }
 
   /**
