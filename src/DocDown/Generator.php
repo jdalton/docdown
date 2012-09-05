@@ -232,7 +232,7 @@ class Generator {
 
         // append entry to api category
         if (!$member || $entry->isCtor() || ($entry->getType() == 'Object' &&
-            !preg_match('/[=:]\s*null\s*[,;]?$/', $entry->entry))) {
+            !preg_match('/[=:]\s*(?:null|undefined)\s*[,;]?$/', $entry->entry))) {
 
           // assign the real entry, replacing the temporary entry if it exist
           $member = ($member ? $member . ($entry->isPlugin() ? '#' : '.') : '') . $name;
