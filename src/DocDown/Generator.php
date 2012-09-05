@@ -221,13 +221,17 @@ class Generator {
         foreach ($members as $member) {
           // create api category arrays
           if (!isset($api[$member]) && $member) {
+            // create temporary entry to be replaced later
             $api[$member] = new Entry('', '', $entry->lang);
             $api[$member]->static = array();
             $api[$member]->plugin = array();
           }
+
           // append entry to api category
           if (!$member || $entry->isCtor() || ($entry->getType() == 'Object' &&
               !preg_match('/[=:]\s*null\s*[,;]?$/', $entry->entry))) {
+
+            // assign the real entry, replacing the temporary entry if it exist
             $member = ($member ? $member . ($entry->isPlugin() ? '#' : '.') : '') . $name;
             $entry->static = @$api[$member] ? $api[$member]->static : array();
             $entry->plugin = @$api[$member] ? $api[$member]->plugin : array();
