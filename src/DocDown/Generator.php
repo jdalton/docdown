@@ -410,9 +410,9 @@ class Generator {
           if (count($aliases = $subentry->getAliases())) {
             array_push($result, '', '#### Aliases');
             foreach ($aliases as $index => $alias) {
-              $aliases[$index] = '*' . $alias->getName() . '*';
+              $aliases[$index] = $alias->getName();
             }
-            $result[] = implode(', ', $aliases);
+            $result[] = '*' . implode(', ', $aliases) . '*';
           }
           // @param
           if (count($params = $subentry->getParams())) {
