@@ -231,12 +231,25 @@ class Generator {
             $member = ($member ? $member . ($entry->isPlugin() ? '#' : '.') : '') . $name;
             $entry->static = @$api[$member] ? $api[$member]->static : array();
             $entry->plugin = @$api[$member] ? $api[$member]->plugin : array();
-            $api[$member]  = $entry;
+
+            $api[$member] = $entry;
+            foreach ($entry->getAliases() as $alias) {
+              $api[$member] = $alias;
+              $alias->static = array();
+              $alias->plugin = array();
+            }
           }
           else if ($entry->isStatic()) {
             $api[$member]->static[] = $entry;
-          } else if (!$entry->isCtor()) {
+            foreach ($entry->getAliases() as $alias) {
+              $api[$member]->static[] = $alias;
+            }
+          }
+          else if (!$entry->isCtor()) {
             $api[$member]->plugin[] = $entry;
+            foreach ($entry->getAliases() as $alias) {
+              $api[$member]->plugin[] = $alias;
+            }
           }
         }
       }
@@ -346,6 +359,11 @@ class Generator {
     $result[] = $openTag;
 
     foreach ($api as $entry) {
+      // skip aliases
+      if ($entry->isAlias()) {
+        continue;
+      }
+
       // add root entry
       $member = $entry->member . $entry->getName();
       $compiling = $compiling ? ($result[] = $closeTag) : true;
@@ -370,6 +388,11 @@ class Generator {
 
         // body
         foreach ($subentries as $subentry) {
+          // skip aliases
+          if ($subentry->isAlias()) {
+            continue;
+          }
+
           // description
           array_push(
             $result,
@@ -377,6 +400,14 @@ class Generator {
             Generator::interpolate("### <a id=\"#{hash}\"></a>`#{member}#{separator}#{call}`\n<a href=\"##{hash}\">#</a> [&#x24C8;](#{href} \"View in source\") [&#x24C9;][1]\n\n#{desc}", $subentry)
           );
 
+          // @alias
+          if (count($aliases = $subentry->getAliases())) {
+            array_push($result, '', '#### Aliases');
+            foreach ($aliases as $index => $alias) {
+              $aliases[$index] = $alias->getName();
+            }
+            $result[] = implode(', ', $aliases);
+          }
           // @param
           if (count($params = $subentry->getParams())) {
             array_push($result, '', '#### Arguments');
