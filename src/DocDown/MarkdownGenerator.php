@@ -516,7 +516,8 @@ class MarkdownGenerator {
         );
         // add entries
         foreach ($entries as $entry) {
-          $result[] = MarkdownGenerator::interpolate('* [`#{member}#{separator}#{name}`](##{hash})', $entry);
+          $className = $entry->isAlias() ? ' class="alias"' : '';
+          $result[] = MarkdownGenerator::interpolate('* <a href="##{hash}"' . $className . '>`#{member}#{separator}#{name}`</a>', $entry);
         }
       }
     }
@@ -552,8 +553,9 @@ class MarkdownGenerator {
             );
           }
           foreach ($entry->{$kind} as $subentry) {
+            $className = $subentry->isAlias() ? ' class="alias"' : '';
             $subentry->member = $member;
-            $result[] = MarkdownGenerator::interpolate('* [`#{member}#{separator}#{name}`](##{hash})', $subentry);
+            $result[] = MarkdownGenerator::interpolate('* <a href="##{hash}"' . $className . '>`#{member}#{separator}#{name}`</a>', $subentry);
           }
         }
       }
