@@ -516,8 +516,18 @@ class MarkdownGenerator {
         );
         // add entries
         foreach ($entries as $entry) {
-          $className = $entry->isAlias() ? ' class="alias"' : '';
-          $result[] = MarkdownGenerator::interpolate('* <a href="##{hash}"' . $className . '>`#{member}#{separator}#{name}`</a>', $entry);
+          if ($entry->isAlias()) {
+            $result[] = MarkdownGenerator::interpolate('* <a href="##{hash}" class="alias">`#{member}#{separator}#{name} -> #{realName}`</a>', array(
+              'hash'      => $entry->hash,
+              'member'    => $entry->member,
+              'name'      => $entry->getName(),
+              'realName'  => $entry->owner->getName(),
+              'separator' => $entry->separator
+            ));
+          }
+          else {
+            $result[] = MarkdownGenerator::interpolate('* <a href="##{hash}">`#{member}#{separator}#{name}`</a>', $entry);
+          }
         }
       }
     }
@@ -553,9 +563,19 @@ class MarkdownGenerator {
             );
           }
           foreach ($entry->{$kind} as $subentry) {
-            $className = $subentry->isAlias() ? ' class="alias"' : '';
             $subentry->member = $member;
-            $result[] = MarkdownGenerator::interpolate('* <a href="##{hash}"' . $className . '>`#{member}#{separator}#{name}`</a>', $subentry);
+            if ($subentry->isAlias()) {
+              $result[] = MarkdownGenerator::interpolate('* <a href="##{hash}" class="alias">`#{member}#{separator}#{name} -> #{realName}`</a>', array(
+                'hash'      => $subentry->hash,
+                'member'    => $subentry->member,
+                'name'      => $subentry->getName(),
+                'realName'  => $subentry->owner->getName(),
+                'separator' => $subentry->separator
+              ));
+            }
+            else {
+              $result[] = MarkdownGenerator::interpolate('* <a href="##{hash}">`#{member}#{separator}#{name}`</a>', $subentry);
+            }
           }
         }
       }

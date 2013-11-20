@@ -32,7 +32,7 @@ Generates Markdown from JSDoc entries in a given file.
 1. `[$options=array()]` *(Array)*: The options array.
 
 #### Returns
-*(String)*: The generated Markdown.
+*(string)*: The generated Markdown.
 
 #### Example
 ```php
