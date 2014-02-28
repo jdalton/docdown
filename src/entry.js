@@ -15,12 +15,12 @@
    * @constructor
    * @param {string} entry The documentation entry to analyse.
    * @param {string} source The source code.
-   * @param {string} [lang ='js'] The language highlighter used for code examples.
+   * @param {string} [lang='js'] The language highlighter used for code examples.
    */
   function Entry(entry, source, lang) {
     this.entry = entry;
     this.lang = lang == null ? 'js' : lang;
-    this.source = str_replace(os.EOL, "\n", source);
+    this.source = source.replace(os.EOL, "\n");
   }
 
   /*--------------------------------------------------------------------------*/
@@ -60,7 +60,7 @@
   }
 
   function hasTag(string, tagName) {
-    tagName = tagName == '*' ? '\w+' : escapeRegExp(tagName);
+    tagName = tagName == '*' ? '\\w+' : escapeRegExp(tagName);
     return RegExp('^ *\\*[\\t ]*@' + tagName + '\\b', 'm').test(string);
   }
 
@@ -117,7 +117,7 @@
     }
     var result = _.result(/\*\/\s*(?:function ([^(]*)|(.*?)(?=[:=,]|return\b))/.exec(this.entry), 0);
     if (result) {
-      result = array_pop(explode('var ', trim(trim(array_pop(explode('.', result))), "'")));
+      result = _.trim(_.trim(result.split('.').pop()), "'").split('var ').pop();
     }
     // resolve name
     // avoid this.getName() because it calls this.getCall()
