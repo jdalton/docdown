@@ -87,7 +87,7 @@
    * @param {number} index The index of the array value to return.
    * @returns {Array|string} The entry's `alias` objects.
    */
-  function getAliases() {
+  function getAliases(index) {
     if (this._aliases == null) {
       var result = _.result(/\*[\t ]*@alias\s+(.+)/.exec(this.entry), 1);
       if (result) {
@@ -348,7 +348,7 @@
    * @param {number} [index] The index of the array value to return.
    * @returns {Array|string} The entry's `member` data.
    */
-  function getMembers() {
+  function getMembers(index) {
     if (this._members == null) {
       var result = getValue(this.entry, 'member');
       if (result) {
@@ -372,7 +372,7 @@
     if (this._name == null) {
       this._name = hasTag(this.entry, 'name')
         ? getValue(this.entry, 'name')
-        : _.first(this.getCall().splict('('));
+        : _.first(this.getCall().split('('));
     }
     return this._name;
   }
@@ -384,7 +384,7 @@
    * @param {number} [index] The index of the array value to return.
    * @returns {Array} The entry's `param` data.
    */
-  function getParams() {]
+  function getParams(index) {
     if (this._params == null) {
       var tuples = _.compact(_.slice(this.entry.match(/^ *\*[\t ]*@param\s+\{\(?([^})]+)\)?\}\s+(\[.+\]|[\w|]+(?:\[.+\])?)\s+([\s\S]*?)(?=\*\s\@[a-z]|\*\/)/gm), 1)),
           result = [];
