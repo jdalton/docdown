@@ -40,7 +40,7 @@
    * @param {number} [index] The index of the array value to return.
    * @returns {Array|string} The entry's `alias` objects.
    */
-  function getAliases() {
+  function getAliases(index) {
     return index == null ? [] : undefined;
   }
 
@@ -161,7 +161,7 @@
    * @param {number} [index] The index of the array value to return.
    * @returns {Array|string} The owner entry's `member` data.
    */
-  function getMembers() {
+  function getMembers(index) {
     return index != null
       ? this._members[index]
       : this._members;
@@ -194,7 +194,7 @@
    * @param {number} [index] The index of the array value to return.
    * @returns {Array} The owner entry's `param` data.
    */
-  function getParams() {
+  function getParams(index) {
     return index !== null
       ? this._params[index]
       : this._params;
