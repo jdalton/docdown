@@ -40,21 +40,19 @@
    * @returns {Array|string} The entry's `alias` objects.
    */
   function getAliases(index) {
-    if (this._aliases == null) {
-      var result = _.result(/\*[\t ]*@alias\s+(.+)/.exec(this.entry), 1);
-      if (result) {
-        result = _.trim(result.replace(/(?:^|\n)[\t ]*\*[\t ]*/, ' '));
-        result = result.split(/,\s*/);
-        result.sort(compareNatural);
-        result = _.map(result, function(value) {
-          return new Alias(value, this);
-        });
-      }
-      this._aliases = result;
+    var result = _.result(/\*[\t ]*@alias\s+(.+)/.exec(this.entry), 1);
+    if (result) {
+      result = cleanValue(result);
+      result = result.split(/,\s*/);
+      result.sort(compareNatural);
+      result = _.map(result, function(value) {
+        return new Alias(value, this);
+      }, this);
     }
-    return index !== null
-      ? this._aliases[index]
-      : this._aliases;
+
+    return index != null
+      ? result[index]
+      : result;
   }
 
   /**
@@ -64,9 +62,6 @@
    * @returns {string} The function call.
    */
   function getCall() {
-    if (this._call != null) {
-      return this._call;
-    }
     var result = _.result(/\*\/\s*(?:function ([^(]*)|(.*?)(?=[:=,]|return\b))/.exec(this.entry), 0);
     if (result) {
       result = _.trim(_.trim(result.split('.').pop()), "'").split('var ').pop();
@@ -89,12 +84,11 @@
           result.push(param[1]);
         }
         paramNames.push(param[1].replace(/^\[|\]/, ''));
-      })
+      });
       // format
       result = name + '(' + result.slice(1).join(', ') + ')';
     }
-    this._call = result ? result : name;
-    return this._call;
+    return result ? result : name;
   }
 
   /**
@@ -104,16 +98,13 @@
    * @returns {string} The entry's `category` data.
    */
   function getCategory() {
-    if (this._category != null) {
-      return this._category;
-    }
     var result = _.result(/\*[\t ]*@category\s+(.+)/.exec(this.entry), 1);
     if (result) {
       result = cleanValue(value);
     } else {
       result = this.getType() == 'Function' ? 'Methods' : 'Properties';
     }
-    this._category = result;
+
     return result;
   }
 
@@ -124,10 +115,7 @@
    * @returns {string} The entry's description.
    */
   function getDesc() {
-    if (this._desc != null) {
-      return this._desc;
-    }
-    var result = getMultilineValue(entry, 'description');
+    var result = getMultilineValue(this.entry, 'description');
     if (result) {
       result = _.trim(result
         .replace(/:\n[\t ]*\*[\t ]*/g, ':<br>\n')
@@ -137,7 +125,7 @@
       var type = this.getType();
       result = (type == 'Function' ? '' : '(' + _.trim(type, '{}').replace(/\|/g, ', ') + '): ') + result;
     }
-    this._desc = result;
+
     return result;
   }
 
@@ -148,14 +136,11 @@
    * @returns {string} The entry's `example` data.
    */
   function getExample() {
-    if (this._example != null) {
-      return this._example;
-    }
-    var result = getMultilineValue(entry, 'example');
+    var result = getMultilineValue(this.entry, 'example');
     if (result) {
       result = '```' + this.lang + '\n' + result + '\n```';
     }
-    this._example = result;
+
     return result;
   }
 
@@ -176,10 +161,7 @@
    * @returns {boolean} Returns `true` if a constructor, else `false`.
    */
   function isCtor() {
-    if (this._isCtor == null) {
-      this._isCtor = hasTag(this.entry, 'constructor');
-    }
-    return this._isCtor;
+    return hasTag(this.entry, 'constructor');
   }
 
   /**
@@ -189,16 +171,13 @@
    * @returns {boolean} Returns `true` if the entry is a function reference, else `false`.
    */
   function isFunction() {
-    if (this._isFunction == null) {
-      this._isFunction = !!(
-        this.isCtor() ||
-        _.size(this.getParams()) ||
-        _.size(this.getReturns()) ||
-        /\*[\t ]*@function\b/.test(this.entry) ||
-        /\*\/\s*function/.test(this.entry)
-      );
-    }
-    return this._isFunction;
+    return !!(
+      this.isCtor() ||
+      _.size(this.getParams()) ||
+      _.size(this.getReturns()) ||
+      /\*[\t ]*@function\b/.test(this.entry) ||
+      /\*\/\s*function/.test(this.entry)
+    );
   }
 
   /**
@@ -208,10 +187,7 @@
    * @returns {boolean} Returns `true` if a license, else `false`.
    */
   function isLicense() {
-    if (this._isLicense == null) {
-      this._isLicense = hasTag(this.entry, 'license');
-    }
-    return this._isLicense;
+    return hasTag(this.entry, 'license');
   }
 
   /**
@@ -221,10 +197,7 @@
    * @returns {boolean} Returns `true` if assigned to a prototype, else `false`.
    */
   function isPlugin() {
-    if (this._isPlugin == null) {
-      this._isPlugin = !this.isCtor() && !this.isPrivate() && !this.isStatic();
-    }
-    return this._isPlugin;
+    return !this.isCtor() && !this.isPrivate() && !this.isStatic();
   }
 
   /**
@@ -234,14 +207,11 @@
    * @returns {boolean} Returns `true` if private, else `false`.
    */
   function isPrivate() {
-    if (this._isPrivate == null) {
-      this._isPrivate = (
-        this.isLicense() ||
-        hasTag(this.entry, 'private') ||
-        !hasTag(this.entry, '*')
-      );
-    }
-    return this._isPrivate;
+    return (
+      this.isLicense() ||
+      hasTag(this.entry, 'private') ||
+      !hasTag(this.entry, '*')
+    );
   }
 
   /**
@@ -251,9 +221,6 @@
    * @returns {boolean} Returns `true` if not assigned to a prototype, else `false`.
    */
   function isStatic() {
-    if (this._isStatic != null) {
-      return this._isStatic;
-    }
     var isPublic = !this.isPrivate(),
         result = isPublic && hasTag(this.entry, 'static');
 
@@ -262,7 +229,7 @@
       var parent = _.last(this.getMembers(0).split(/[#.]/));
       if (parent) {
         var source = this.source;
-        _.each(Entry.getEntries(source), function(entry) {
+        _.each(getEntries(source), function(entry) {
           entry = new Entry(entry, source);
           if (entry.getName() == parent) {
             result = !entry.isCtor();
@@ -273,7 +240,7 @@
         result = true;
       }
     }
-    this._isStatic = result;
+
     return result;
   }
 
@@ -284,13 +251,10 @@
    * @returns {number} The entry's line number.
    */
   function getLineNumber() {
-    if (this._lineNumber == null) {
-      var entry = this.entry,
-          lines = _.slice(this.source.slice(0, this.source.indexOf(entry) + entry.length).match(/\n/g), 1);
+    var entry = this.entry,
+        lines = _.slice(this.source.slice(0, this.source.indexOf(entry) + entry.length).match(/\n/g), 1);
 
-      this._lineNumber = lines.length + 1;
-    }
-    return this._lineNumber;
+    return lines.length + 1;
   }
 
   /**
@@ -301,17 +265,15 @@
    * @returns {Array|string} The entry's `member` data.
    */
   function getMembers(index) {
-    if (this._members == null) {
-      var result = getValue(this.entry, 'member');
-      if (result) {
-        result = result.split(/,\s*/);
-        result.sort(compareNatural);
-      }
-      this._members = result;
+    var result = getValue(this.entry, 'member');
+    if (result) {
+      result = result.split(/,\s*/);
+      result.sort(compareNatural);
     }
-    return index !== null
-      ? this._members[index]
-      : this._members;
+
+    return index != null
+      ? result[index]
+      : result;
   }
 
   /**
@@ -321,12 +283,7 @@
    * @returns {string} The entry's `name` data.
    */
   function getName() {
-    if (this._name == null) {
-      this._name = hasTag(this.entry, 'name')
-        ? getValue(this.entry, 'name')
-        : _.first(this.getCall().split('('));
-    }
-    return this._name;
+    return hasTag(this.entry, 'name') ? getValue(this.entry, 'name') : _.first(this.getCall().split('('));
   }
 
   /**
@@ -337,28 +294,17 @@
    * @returns {Array} The entry's `param` data.
    */
   function getParams(index) {
-    if (this._params == null) {
-      var tuples = _.compact(_.slice(this.entry.match(/^ *\*[\t ]*@param\s+\{\(?([^})]+)\)?\}\s+(\[.+\]|[\w|]+(?:\[.+\])?)\s+([\s\S]*?)(?=\*\s\@[a-z]|\*\/)/gm), 1)),
-          result = [];
+    // TODO: needs lots of work
+    var tuples = _.compact(this.entry.match(/^ *\*[\t ]*@param\s+\{\(?([^})]+)\)?\}\s+(\[.+\]|[\w|]+(?:\[.+\])?)\s+([\s\S]*?)(?=\*\s\@[a-z]|\*\/)/gm)),
+        result = [];
 
-      _.each(tuples, function(tuple) {
-        _.each(tuple, function(value, index) {
-          var array = result[index],
-              value = _.trim(value.replace(/(?:^|\n)[\t ]*\*[\t ]*/g, ' '));
+    _.each(tuples, function(tuple, index) {
+      result[index] = [tuple];
+    });
 
-          if (array) {
-            array.push(value);
-          } else {
-            result[index] = [value];
-          }
-        });
-      });
-
-      this._params = result;
-    }
-    return index !== null
-      ? this._params[index]
-      : this._params;
+    return index != null
+      ? result[index]
+      : result;
   }
 
   /**
@@ -368,17 +314,15 @@
    * @returns {string} The entry's `returns` data.
    */
   function getReturns() {
-    if (this._returns != null) {
-      return this._returns;
-    }
     var result = getMultilineValue(this.entry, 'returns');
+    // regexp for the type and description
+    result = /{([^}]+)\}\s+([\s\S]+)/gm.exec(result);
     if (result) {
-      result = _.invoke(result.slice(1), 'trim');
-      result[0] = result[0].replace(/\|/g, ', ');
-      result[1] = cleanValue(result[1]);
+      return {
+        type: result[1].replace(/\|/g, ', '),
+        desc: cleanValue(result[2])
+      };
     }
-    this._returns = result;
-    return result;
   }
 
   /**
@@ -388,18 +332,15 @@
    * @returns {string} The entry's `type` data.
    */
   function getType() {
-    if (this._type == null) {
-      var result = getValue(this.entry, 'type');
-      if (result) {
-        if (/^(?:array|function|object|regexp)$/.test(result)) {
-          result = _.capitalize(result);
-        }
-      } else {
-        result = isFunction(this) ? 'Function' : 'unknown';
+    var result = getValue(this.entry, 'type');
+    if (result) {
+      if (/^(?:array|function|object|regexp)$/.test(result)) {
+        result = _.capitalize(result);
       }
-      this._type = result;
+    } else {
+      result = this.isFunction() ? 'Function' : 'unknown';
     }
-    return this._type;
+    return result;
   }
 
   /*--------------------------------------------------------------------------*/
