@@ -73,9 +73,9 @@
     // compile function call syntax
     if (this.isFunction()) {
       // compose parts
-      result = array(result);
-      params = this.getParams();
-      paramNames = [];
+      result = new Array(result);
+      var params = this.getParams();
+      var paramNames = [];
 
       _.each(params, function(param) {
         // skip params that are properties of other params (e.g. `options.leading`)
@@ -353,6 +353,7 @@
     'getExample': getExample,
     'isAlias': isAlias,
     'isCtor': isCtor,
+    'isFunction': isFunction,
     'isLicense': isLicense,
     'isPlugin': isPlugin,
     'isPrivate': isPrivate,
