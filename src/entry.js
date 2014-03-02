@@ -14,6 +14,12 @@
 
   /*--------------------------------------------------------------------------*/
 
+  var tokens = {
+    alias: /\*[\t ]*@alias\s+(.+)/,
+    function: /\*\/\s*(?:function ([^(]*)|(.*?)(?=[:=,]|return\b))/,
+    name: /\*[\t ]*@name\s+(.+)/
+  };
+
   /**
    * The Entry constructor.
    *
@@ -40,7 +46,7 @@
    * @returns {Array|string} The entry's `alias` objects.
    */
   function getAliases(index) {
-    var result = _.result(/\*[\t ]*@alias\s+(.+)/.exec(this.entry), 1);
+    var result = _.result(tokens.alias.exec(this.entry), 1);
     if (result) {
       result = cleanValue(result);
       result = result.split(/,\s*/);
@@ -62,13 +68,13 @@
    * @returns {string} The function call.
    */
   function getCall() {
-    var result = _.result(/\*\/\s*(?:function ([^(]*)|(.*?)(?=[:=,]|return\b))/.exec(this.entry), 0);
+    var result = _.result(tokens.function.exec(this.entry), 0);
     if (result) {
       result = _.trim(_.trim(result.split('.').pop()), "'").split('var ').pop();
     }
     // resolve name
     // avoid this.getName() because it calls this.getCall()
-    var name = _.trim(_.result(/\*[\t ]*@name\s+(.+)/.exec(this.entry), 1)) || result;
+    var name = _.trim(_.result(tokens.name.exec(this.entry), 1)) || result;
 
     // compile function call syntax
     if (this.isFunction()) {
@@ -294,13 +300,26 @@
    * @returns {Array} The entry's `param` data.
    */
   function getParams(index) {
-    // TODO: needs lots of work
-    var tuples = _.compact(this.entry.match(/^ *\*[\t ]*@param\s+\{\(?([^})]+)\)?\}\s+(\[.+\]|[\w|]+(?:\[.+\])?)\s+([\s\S]*?)(?=\*\s\@[a-z]|\*\/)/gm)),
-        result = [];
+    // TODO: this regex skips some lines
+    var giantRegexpOfDoom = /^ *\*[\t ]*@param\s+\{\(?([^})]+)\)?\}\s+(\[.+\]|[\w|]+(?:\[.+\])?)\s+([\s\S]*?)(?=\*\s\@[a-z]|\*\/)/gm;
 
-    _.each(tuples, function(tuple, index) {
-      result[index] = [tuple];
-    });
+    var result = [];
+
+    var tuple;
+    while ((tuple = giantRegexpOfDoom.exec(this.entry)) !== null){
+      tuple = _.slice(tuple, 1);
+      _.each(tuple, function(value, index) {
+        var array = result[index];
+
+        value = _.trim(value.replace(/(?:^|\n)[\t ]*\*[\t ]*/g, ' '));
+
+        if (array) {
+          array.push(value);
+        } else {
+          result[index] = [value];
+        }
+      });
+    }
 
     return index != null
       ? result[index]
