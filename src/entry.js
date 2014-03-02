@@ -5,7 +5,12 @@
       os = require('os'),
       Alias = require('./alias.js');
 
-  var NUMBER_GROUPS = /(-?\d*\.?\d+)/g;
+  var cleanValue = require('./cleanValue'),
+      compareNatural = require('./compareNatural'),
+      getEntries = require('./getEntries'),
+      getMultilineValue = require('./getMultilineValue'),
+      getValue = require('./getValue'),
+      hasTag = require('./hasTag');
 
   /*--------------------------------------------------------------------------*/
 
@@ -20,65 +25,12 @@
   function Entry(entry, source, lang) {
     this.entry = entry;
     this.lang = lang == null ? 'js' : lang;
-    this.source = source.replace(os.EOL, "\n");
+    this.source = source.replace(os.EOL, '\n');
+
+    _.extend(this, Entry.prototype, function(__, method){
+      return _.memoize(method);
+    });
   }
-
-  /*--------------------------------------------------------------------------*/
-
-  function cleanValue(string) {
-    string = string == null ? '' : String(string);
-    return string && _.trim(string.replace(/(?:^|\n)[\t ]*\*[\t ]*/g, ' '));
-  }
-
-  function compareNatural(a, b) {
-    var aa = String(a).split(NUMBER_GROUPS),
-        bb = String(b).split(NUMBER_GROUPS),
-        min = Math.min(aa.length, bb.length);
-
-    for (var i = 0; i < min; i++) {
-      var x = parseFloat(aa[i]) || aa[i].toLowerCase(),
-          y = parseFloat(bb[i]) || bb[i].toLowerCase();
-      if (x < y) return -1;
-      else if (x > y) return 1;
-    }
-
-    return 0;
-  }
-
-  function getMultilineValue(string, tagName) {
-    var prelude = (name == 'description' ? '^ */\\*\\*(?: *\\n *\\* *)?' : '^ *\\*[\\t ]*@' + escapeRegExp(tagName) + '\\b'),
-        postlude = '(?=\\*\\s+\\@[a-z]|\\*/)',
-        result = _.result(RegExp(prelude + '([\\s\\S]*?)' + postlude, 'gm').exec(string), 1);
-
-    return result ? _.trim(result.replace(/(?:^|\n)[\t ]*\*[\t ]*/g, '\n')) : '';
-  }
-
-  function getValue(string, tagName) {
-    tagName = tagName == 'member' ? tagName + '(?:Of)?' : escapeRegExp(tagName);
-    var result = _.result(RegExp('^ *\\*[\\t ]*@' + tagName + '\\s+(.+)', 'm').exec(string), 1);
-    return cleanValue(result);
-  }
-
-  function hasTag(string, tagName) {
-    tagName = tagName == '*' ? '\\w+' : escapeRegExp(tagName);
-    return RegExp('^ *\\*[\\t ]*@' + tagName + '\\b', 'm').test(string);
-  }
-
-  /*--------------------------------------------------------------------------*/
-
-  /**
-   * Extracts the documentation entries from source code.
-   *
-   * @static
-   * @memberOf Entry
-   * @param {string} source The source code.
-   * @returns {Array} The array of entries.
-   */
-  function getEntries(source) {
-    return source.match(/\/\*\*(?![-!])[\s\S]*?\*\/\s*.+/g) || [];
-  }
-
-  /*--------------------------------------------------------------------------*/
 
   /**
    * Extracts the entry's `alias` objects.
