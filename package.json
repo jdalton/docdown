@@ -2,17 +2,11 @@
   "name": "docdown",
   "version": "1.0.0",
   "description": "A simple JSDoc to Markdown documentation generator.",
-  "main": "index.js",
-  "directories": {
-    "doc": "doc"
-  },
+  "main": "lib/generator.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/jdalton/docdown.git"
-  },
+  "repository": "jdalton/docdown",
   "keywords": [
     "jsdoc",
     "markdown",
