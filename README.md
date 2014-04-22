@@ -12,14 +12,14 @@ For a list of upcoming features, check out our [roadmap](https://github.com/jdal
 
 Usage example:
 
-```php
-require("docdown.php");
+```js
+var docdown = require("docdown");
 
 // generate Markdown
-$markdown = docdown(array(
-  "path" => $filepath,
-  "url"  => "https://github.com/username/project/blob/master/my.js"
-));
+var markdown = docdown({
+  "path": filepath,
+  "url" : "https://github.com/username/project/blob/master/my.js"
+});
 ```
 
 ## Author
