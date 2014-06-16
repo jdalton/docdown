@@ -1,24 +1,21 @@
-# Docdown <sup>v1.0.0</sup>
+# Docdown v1.0.0
 
 A simple JSDoc to Markdown documentation generator.
 
 ## Documentation
 
-The documentation for Docdown can be viewed here: [/doc/README.md](https://github.com/jdalton/docdown/blob/master/doc/README.md#readme)
+* [doc/README.md](https://github.com/jdalton/docdown/blob/master/doc/README.md#readme)
+* [wiki/Roadmap](https://github.com/jdalton/docdown/wiki/Roadmap)
 
-For a list of upcoming features, check out our [roadmap](https://github.com/jdalton/docdown/wiki/Roadmap).
-
-## Installation and usage
-
-Usage example:
+## Usage
 
 ```js
-var docdown = require("docdown");
+var docdown = require('docdown');
 
 // generate Markdown
 var markdown = docdown({
-  "path": filepath,
-  "url" : "https://github.com/username/project/blob/master/my.js"
+  'path': filepath,
+  'url': 'https://github.com/username/project/blob/master/my.js'
 });
 ```
 
