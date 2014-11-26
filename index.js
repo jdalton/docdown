@@ -12,32 +12,28 @@
       fs = require('fs'),
       generateDoc = require('./lib/generator.js');
 
-
   /**
    * Generates Markdown documentation based on JSDoc comments.
    *
-   * @constructor
    * @name docdown
-   * @param options The options to use to generate docs.
+   * @param options The options to use to generate documentation.
    * @returns {string} The generated Markdown code.
    */
   function docdown(options) {
-    var output;
-
     if (!options.path || !options.url) {
       throw new Error("Path and/or URL must be specified");
     }
 
-    options = _.assign({
+    _.defaults(options, {
       toc   : 'properties',
       lang  : 'js',
       title : path.basename(options.path) + ' API documentation'
-    }, options);
+    });
 
-    output = '# '+ options.title + '\n\n' + generateDoc(fs.readFileSync(options.path,'utf8'), options);
-    
-    return output;
-    
+    return generateDoc(
+      fs.readFileSync(options.path, 'utf8'),
+      options
+    );
   }
 
   module.exports = docdown;
