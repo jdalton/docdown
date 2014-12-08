@@ -2,7 +2,8 @@
   "name": "docdown",
   "version": "1.0.0",
   "description": "A simple JSDoc to Markdown documentation generator.",
-  "main": "lib/generator.js",
+  "main": "index.js",
+  "bin": "bin/docdown",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
