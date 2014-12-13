@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/jdalton/docdown",
   "dependencies": {
-    "lodash": "^2.4.1"
+    "lodash": "git://github.com/lodash/lodash.git#faddd94518b4f99eb1b251dcb58df86cac7ed2fe"
   }
 }
