@@ -3,23 +3,17 @@
   "version": "1.0.0",
   "description": "A simple JSDoc to Markdown documentation generator.",
   "main": "index.js",
-  "bin": "bin/docdown",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": "jdalton/docdown",
-  "keywords": [
-    "jsdoc",
-    "markdown",
-    "documentation",
-    "generator"
-  ],
-  "author": "John-David Dalton",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/jdalton/docdown/issues"
-  },
-  "homepage": "https://github.com/jdalton/docdown",
+  "bin": "bin/docdown",
+  "keywords": "jsdoc, markdown, documentation, generator",
+  "author": "John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/)",
+  "contributors": [
+    "John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/)",
+    "Benjamin Tan <demoneaux@gmail.com> (https://d10.github.io/)",
+    "Mathias Bynens <mathias@qiwi.be> (https://mathiasbynens.be/)"
+  ],
+  "repository": "jdalton/docdown",
+  "scripts": { "test": "echo \"Error: no test specified\" && exit 1" },
   "dependencies": {
     "lodash": "git://github.com/lodash/lodash.git#faddd94518b4f99eb1b251dcb58df86cac7ed2fe"
   }
