@@ -54,9 +54,8 @@ function optionToValue(name, string) {
 
 /*----------------------------------------------------------------------------*/
 
-var cwd = process.cwd();
-
-var fileName = argv[2],
+var cwd = process.cwd(),
+    fileName = argv[2],
     outputFile = argv[3];
 
 if (
@@ -81,9 +80,10 @@ fileName = path.join(cwd, fileName);
 outputFile = path.join(cwd, outputFile);
 
 var options = {
+  'hash': getOption('hash'),
+  'path': fileName,
   'title': getOption('title'),
   'toc': getOption('toc'),
-  'path': fileName,
   'url': getOption('url')
 };
 
