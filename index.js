@@ -18,15 +18,16 @@ var _ = require('lodash'),
  * @returns {string} The generated Markdown code.
  */
 function docdown(options) {
+  options = _.defaults(options || {}, {
+    'hash': 'default',
+    'lang': 'js',
+    'title': path.basename(options.path) + ' API documentation',
+    'toc': 'properties'
+  });
+
   if (!options.path || !options.url) {
     throw new Error("Path and/or URL must be specified");
   }
-  _.defaults(options, {
-    'toc': 'properties',
-    'lang': 'js',
-    'title': path.basename(options.path) + ' API documentation'
-  });
-
   return generateDoc(
     fs.readFileSync(options.path, 'utf8'),
     options
