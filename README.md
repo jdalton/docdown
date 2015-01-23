@@ -12,7 +12,6 @@ A simple JSDoc to Markdown documentation generator.
 ```js
 var docdown = require('docdown');
 
-// generate Markdown
 var markdown = docdown({
   'path': filepath,
   'url': 'https://github.com/username/project/blob/master/my.js'
