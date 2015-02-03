@@ -8,7 +8,7 @@
 var _ = require('lodash'),
     path = require('path'),
     fs = require('fs'),
-    generateDoc = require('./lib/generator.js');
+    generator = require('./lib/generator.js');
 
 /**
  * Generates Markdown documentation based on JSDoc comments.
@@ -26,12 +26,9 @@ function docdown(options) {
   });
 
   if (!options.path || !options.url) {
-    throw new Error("Path and/or URL must be specified");
+    throw new Error('Path and/or URL must be specified');
   }
-  return generateDoc(
-    fs.readFileSync(options.path, 'utf8'),
-    options
-  );
+  return generator(fs.readFileSync(options.path, 'utf8'), options);
 }
 
 module.exports = docdown;
