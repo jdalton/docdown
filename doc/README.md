@@ -1,21 +1,17 @@
-# Docdown <sup>v1.0.0</sup>
+# Docdown <sup>v0.1.0</sup>
+
+<!-- div class="toc-container" -->
 
 <!-- div -->
 
-
-<!-- div -->
-
-## <a id="docdown"></a>`docdown`
-* [`docdown`](#docdown$optionsarray)
+## `docdown`
+* <a href="#docdown">`docdown`</a>
 
 <!-- /div -->
 
-
 <!-- /div -->
 
-
-<!-- div -->
-
+<!-- div class="doc-container" -->
 
 <!-- div -->
 
@@ -23,47 +19,20 @@
 
 <!-- div -->
 
-### <a id="docdown$optionsarray"></a>`docdown([$options=array()])`
-<a href="#docdown$optionsarray">#</a> [&#x24C8;](https://github.com/jdalton/docdown/blob/master/docdown.php#L34 "View in source") [&#x24C9;][1]
+### <a id="docdown"></a>`.docdown()`
+<a href="#docdown">#</a> [&#x24C8;](https://github.com/jdalton/docdown/tree/0.1.0/index.js#L20 "View in source") [&#x24C9;][1]
 
-Generates Markdown from JSDoc entries in a given file.
-
-#### Arguments
-1. `[$options=array()]` *(Array)*: The options array.
+Generates Markdown documentation based on JSDoc comments.
 
 #### Returns
-*(string)*: The generated Markdown.
-
-#### Example
-```php
-// specify a file path
-$markdown = docdown(array(
-  // path to js file
-  'path' => $filepath,
-  // url used to reference line numbers in code
-  'url' => 'https://github.com/username/project/blob/master/my.js'
-));
-
-// or pass raw js
-$markdown = docdown(array(
-  // raw JavaScript source
-  'source' => $rawJS,
-  // documentation title
-  'title' => 'My API Documentation',
-  // url used to reference line numbers in code
-  'url' => 'https://github.com/username/project/blob/master/my.js'
-));
-```
+*(string)*:  The generated Markdown code.
 
 * * *
 
 <!-- /div -->
 
+<!-- /div -->
 
 <!-- /div -->
 
-
-<!-- /div -->
-
-
-  [1]: #docdown "Jump back to the TOC."
+ [1]: #docdown "Jump back to the TOC."
