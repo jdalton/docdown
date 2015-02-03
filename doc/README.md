@@ -1,4 +1,4 @@
-# Docdown <sup>v0.1.0</sup>
+# docdown <sup>v0.1.0</sup>
 
 <!-- div class="toc-container" -->
 

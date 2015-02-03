@@ -23,7 +23,7 @@ var output = process.argv[3] || (path.basename(file).replace(reExt, '') + '.md')
 
 var markdown = docdown({
   'path': path.join(process.cwd(), file),
-  'title': 'Docdown <sup>v' + version + '</sup>',
+  'title': 'docdown <sup>v' + version + '</sup>',
   'url': 'https://github.com/jdalton/docdown/tree/' + version + '/index.js'
 });
 
