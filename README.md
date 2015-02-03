@@ -1,4 +1,4 @@
-# Docdown v1.0.0
+# Docdown v0.1.0
 
 A simple JSDoc to Markdown documentation generator.
 
