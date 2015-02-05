@@ -15,6 +15,6 @@
   "repository": "jdalton/docdown",
   "scripts": { "test": "echo \"Error: no test specified\" && exit 1" },
   "dependencies": {
-    "lodash": "git://github.com/lodash/lodash.git#faddd94518b4f99eb1b251dcb58df86cac7ed2fe"
+    "lodash": "^3.0.0"
   }
 }
