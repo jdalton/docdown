@@ -2,8 +2,8 @@
   "name": "docdown",
   "version": "0.1.0",
   "description": "A simple JSDoc to Markdown documentation generator.",
-  "main": "index.js",
   "license": "MIT",
+  "main": "index.js",
   "bin": "bin/docdown",
   "keywords": "jsdoc, markdown, documentation",
   "author": "John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/)",
@@ -16,5 +16,13 @@
   "scripts": { "test": "echo \"Error: no test specified\" && exit 1" },
   "dependencies": {
     "lodash": "^3.0.0"
-  }
+  },
+  "files": [
+    "index.js",
+    "bin/docdown",
+    "lib/alias.js",
+    "lib/entry.js",
+    "lib/generator.js",
+    "lib/util.js"
+  ]
 }
