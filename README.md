@@ -2,11 +2,6 @@
 
 A simple JSDoc to Markdown documentation generator.
 
-## Documentation
-
-* [doc/README.md](https://github.com/jdalton/docdown/blob/master/doc/README.md#readme)
-* [wiki/Roadmap](https://github.com/jdalton/docdown/wiki/Roadmap)
-
 ## Usage
 
 ```js
