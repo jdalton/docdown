@@ -1,4 +1,4 @@
-# docdown <sup>v0.1.0</sup>
+# docdown <sup>v0.2.0</sup>
 
 <!-- div class="toc-container" -->
 
@@ -19,8 +19,8 @@
 
 <!-- div -->
 
-### <a id="docdown"></a>`.docdown()`
-<a href="#docdown">#</a> [&#x24C8;](https://github.com/jdalton/docdown/tree/0.1.0/index.js#L20 "View in source") [&#x24C9;][1]
+### <a id="docdown"></a>`docdown()`
+<a href="#docdown">#</a> [&#x24C8;](https://github.com/jdalton/docdown/tree/0.2.0/index.js#L20 "View in source") [&#x24C9;][1]
 
 Generates Markdown documentation based on JSDoc comments.
 
