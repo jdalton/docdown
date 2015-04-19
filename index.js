@@ -25,7 +25,7 @@ function docdown(options) {
     'toc': 'properties'
   });
 
-  if (!options.path || !options.url) {
+  if (!options.path && !options.url) {
     throw new Error('Path and/or URL must be specified');
   }
   return generator(fs.readFileSync(options.path, 'utf8'), options);
