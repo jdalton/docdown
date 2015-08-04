@@ -1,5 +1,5 @@
 /*!
- * docdown v0.2.0
+ * docdown v0.2.1
  * Copyright 2011-2015 John-David Dalton <http://allyoucanleet.com/>
  * Available under MIT license <http://mths.be/mit>
  */
