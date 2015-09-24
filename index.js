@@ -21,6 +21,7 @@ function docdown(options) {
   options = _.defaults(options || {}, {
     'hash': 'default',
     'lang': 'js',
+    'sort': true,
     'title': path.basename(options.path) + ' API documentation',
     'toc': 'properties'
   });
