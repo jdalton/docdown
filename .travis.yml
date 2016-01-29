@@ -1,10 +1,14 @@
 language: node_js
 sudo: false
 node_js:
-  - "0.10"
+  - "5"
 git:
   depth: 10
-install:
+before_install:
+  - "nvm use $TRAVIS_NODE_VERSION"
+  - "npm set loglevel error"
+  - "npm set progress false"
+  - "npm i -g npm@\"^2.0.0\""
   - "git clone --depth=10 --branch=master git://github.com/lodash/lodash.git ./node_modules/lodash"
 script:
   - "./bin/docdown ./node_modules/lodash/lodash.js output.md toc=\"categories\" url=\"https://github.com/lodash/lodash/blob/master/lodash.js\""
