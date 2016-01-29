@@ -18,7 +18,7 @@ var _ = require('lodash'),
  * @returns {string} The generated Markdown code.
  */
 function docdown(options) {
-  options = _.defaults(options || {}, {
+  options = _.defaults(options, {
     'hash': 'default',
     'lang': 'js',
     'sort': true,

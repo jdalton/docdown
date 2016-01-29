@@ -15,7 +15,7 @@
   "repository": "jdalton/docdown",
   "scripts": { "test": "echo \"Error: no test specified\" && exit 1" },
   "dependencies": {
-    "lodash": "^3.0.0"
+    "lodash": "^4.0.1"
   },
   "files": [
     "index.js",
