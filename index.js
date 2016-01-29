@@ -6,8 +6,8 @@
 'use strict';
 
 var _ = require('lodash'),
-    path = require('path'),
     fs = require('fs'),
+    path = require('path'),
     generator = require('./lib/generator.js');
 
 /**
