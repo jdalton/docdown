@@ -14,6 +14,7 @@
   ],
   "repository": "jdalton/docdown",
   "dependencies": {
+    "doctrine": "^1.2.0",
     "lodash": "^4.2.1"
   },
   "scripts": {
