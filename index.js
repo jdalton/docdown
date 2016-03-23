@@ -13,8 +13,14 @@ var _ = require('lodash'),
 /**
  * Generates Markdown documentation based on JSDoc comments.
  *
- * @name docdown
- * @param options The options to use to generate documentation.
+ * @param {Object} options The options object.
+ * @param {string} options.path The input file path.
+ * @param {string} options.url The source URL.
+ * @param {string} [options.hash='default'] The hash style for links ('default' or 'github').
+ * @param {string} [options.lang='js'] The language indicator for code blocks.
+ * @param {boolean} [options.sort=true] Specify wether entries are sorted.
+ * @param {string} [options.title='<%= basename(options.path) %> API documentation'] The documentation title.
+ * @param {string} [options.toc='properties'] The table of contents organization style ('categories' or 'properties').
  * @returns {string} The generated Markdown code.
  */
 function docdown(options) {
