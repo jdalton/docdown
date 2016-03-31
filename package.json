@@ -15,7 +15,7 @@
   "repository": "jdalton/docdown",
   "dependencies": {
     "doctrine": "^1.2.0",
-    "lodash": "^4.6.1"
+    "lodash": "^4.7.0"
   },
   "scripts": {
     "doc": "node bin/docdown index.js doc/README.md url=\"https://github.com/jdalton/docdown/blob/${npm_package_version}/index.js\" title=\"docdown <sup>v${npm_package_version}</sup>\" hash='github'",
