@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "index.js",
   "bin": "bin/docdown",
-  "keywords": "jsdoc, markdown, documentation",
+  "keywords": "documentation, jsdoc, markdown",
   "author": "John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/)",
   "contributors": [
     "John-David Dalton <john.david.dalton@gmail.com> (http://allyoucanleet.com/)",
