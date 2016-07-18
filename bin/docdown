@@ -89,6 +89,6 @@ var options = {
 
 var output = docdown(options);
 
-fs.writeFileSync(outputFile, output, 'utf-8');
+fs.writeFileSync(outputFile, output, 'utf8');
 
 process.exit(0);
