@@ -17,7 +17,7 @@ var _ = require('lodash'),
  * @param {string} options.path The input file path.
  * @param {string} options.url The source URL.
  * @param {string} [options.lang='js'] The language indicator for code blocks.
- * @param {boolean} [options.sort=true] Specify wether entries are sorted.
+ * @param {boolean} [options.sort=true] Specify whether entries are sorted.
  * @param {string} [options.style='default'] The hash style for links ('default' or 'github').
  * @param {string} [options.title='<%= basename(options.path) %> API documentation'] The documentation title.
  * @param {string} [options.toc='properties'] The table of contents organization style ('categories' or 'properties').
