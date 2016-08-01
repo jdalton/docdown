@@ -69,9 +69,12 @@ if (
     'Usage:',
     '  docdown inputFile.js outputFile.md [options]',
     'Options:',
-    '  title="title"               The title of the API documentation.',
-    '  toc="categories|properties" The chosen method to generate the TOC.',
-    '  url="url"                   The URL of the input file to use as a link.'
+    '  lang="js"                   The language indicator for code blocks.',
+    '  sort=true|false             Specify whether entries are sorted.',
+    '  style="default|github"      The hash style for links.',
+    '  title="title"               The documentation title.',
+    '  toc="categories|properties" The table of contents organization style.',
+    '  url="url"                   The source URL.'
   ].join('\n'));
   process.exit(1);
 }
@@ -80,8 +83,10 @@ fileName = path.join(cwd, fileName);
 outputFile = path.join(cwd, outputFile);
 
 var options = {
-  'hash': getOption('hash'),
+  'lang': getOption('lang'),
   'path': fileName,
+  'sort': getOption('sort'),
+  'style': getOption('style'),
   'title': getOption('title'),
   'toc': getOption('toc'),
   'url': getOption('url')
