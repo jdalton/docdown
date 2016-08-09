@@ -12,6 +12,7 @@ before_install:
   - "npm set loglevel error"
   - "npm set progress false"
   - "npm i -g npm@\"^2.0.0\""
+  - "npm prune && npm update --dev"
 script:
   - "./bin/docdown ./node_modules/lodash/lodash.js output.md toc=\"categories\" url=\"https://github.com/lodash/lodash/blob/master/lodash.js\""
   - "cat output.md"
