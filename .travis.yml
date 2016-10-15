@@ -1,17 +1,30 @@
 language: node_js
 sudo: false
 node_js:
-  - "6"
+  - 6
+
 cache:
   directories:
     - $HOME/.npm
+    - $HOME/.yarn-cache
+
 git:
   depth: 10
+
 before_install:
-  - "nvm use $TRAVIS_NODE_VERSION"
-  - "npm set loglevel error"
-  - "npm set progress false"
-  - "npm i -g npm@\"^2.0.0\""
+  # Use exact Node version.
+  - nvm use $TRAVIS_NODE_VERSION
+
+  # Setup package managers.
+  - npm set loglevel error
+  - npm set progress false
+  - npm i -g yarn
+  - yarn -V
+
+install:
+  # Install packages.
+  - yarn
+
 script:
-  - "./bin/docdown ./node_modules/lodash/lodash.js output.md toc=\"categories\" url=\"https://github.com/lodash/lodash/blob/master/lodash.js\""
-  - "cat output.md"
+  - ./bin/docdown ./node_modules/lodash/lodash.js output.md toc=categories url=https://github.com/lodash/lodash/blob/master/lodash.js
+  - cat output.md
