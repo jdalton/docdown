@@ -1,6 +1,6 @@
 {
   "name": "docdown",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "A simple JSDoc to Markdown documentation generator.",
   "license": "MIT",
   "main": "index.js",
