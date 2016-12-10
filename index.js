@@ -6,7 +6,6 @@
 'use strict';
 
 var _ = require('lodash'),
-    fs = require('fs'),
     path = require('path'),
     generator = require('./lib/generator.js');
 
@@ -28,14 +27,23 @@ function docdown(options) {
     'lang': 'js',
     'sort': true,
     'style': 'default',
-    'title': path.basename(options.path) + ' API documentation',
+    'title': 'API documentation',
     'toc': 'properties'
   });
 
-  if (!options.path || !options.url) {
-    throw new Error('Path and URL must be specified');
+  if (!options.files && (!options.path || !options.url)) {
+    throw new Error('Files or Path and URL must be specified');
   }
-  return generator(fs.readFileSync(options.path, 'utf8'), options);
+
+  if (options.files && options.path && options.url) {
+    throw new Error('You must either specify files or path and URL.')
+  }
+
+  if (options.path && options.url) {
+    options.files = [{path: options.path, url: options.url}];
+  }
+
+  return generator(options);
 }
 
 module.exports = docdown;
