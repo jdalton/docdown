@@ -1,7 +1,7 @@
 /*!
  * docdown
- * Copyright 2011-2016 John-David Dalton <http://allyoucanleet.com/>
- * Available under MIT license <https://mths.be/mit>
+ * Copyright 2011-2016 John-David Dalton
+ * Available under MIT license
  */
 'use strict';
 
